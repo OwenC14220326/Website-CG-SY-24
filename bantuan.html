@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bantuan - Cell Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --light: #dbf3fa;
+            --white: #ffffff;
+            --text-dark: #333;
+            --text-light: #f8f9fa;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            color: var(--text-dark);
+            min-height: 100vh;
+            line-height: 1.6;
+            padding-top: 80px;
+        }
+        
+        /* Consistent Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        nav a.active {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        /* Main Content */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .page-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* FAQ Container */
+        .faq-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Search Box */
+        .search-box {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(160, 196, 255, 0.3);
+        }
+
+        .search-box button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* FAQ Items */
+        .faq-item {
+            background: var(--primary);
+            color: var(--white);
+            padding: 18px 25px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            background: #0c4b7a;
+        }
+
+        .faq-item.active {
+            background: #0c4b7a;
+        }
+
+        .faq-item strong {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-item strong::after {
+            content: "+";
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active strong::after {
+            content: "-";
+        }
+
+        .faq-item p {
+            display: none;
+            background: var(--white);
+            color: var(--text-dark);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .contact-section h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .contact-text h4 {
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .faq-container, .contact-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">CONGROUP</div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="materi.html">Materi</a></li>
+                <li><a href="daftar.html">Daftar</a></li>
+                <li><a href="bantuan.html" class="active">Bantuan</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="page-container">
+        <h1 class="page-title">Bantuan & FAQ</h1>
+        
+        <div class="faq-container">
+            <div class="search-box">
+                <input type="text" placeholder="Cari pertanyaan...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apa itu CG (Cell Group)?</strong>
+                <p>CG atau Cell Group adalah kelompok kecil dalam komunitas gereja yang bertujuan untuk membangun persekutuan, belajar Firman Tuhan bersama, dan saling mendukung dalam kehidupan rohani serta keseharian.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Mengapa saya perlu bergabung dengan CG SY 24?</strong>
+                <p>Bergabung dengan CG SY 24 membantu kamu bertumbuh dalam iman, memiliki komunitas yang mendukung, dan dapat berbagi pengalaman serta doa bersama anggota lain.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Bagaimana cara bergabung dengan CG SY 24?</strong>
+                <p>Kamu bisa mendaftar melalui website ini dengan mengisi formulir pendaftaran CG. Setelah itu, tim kami akan menentukan keaslian dan kesesuaian formulirmu.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah ada biaya untuk bergabung dengan CG SY 24?</strong>
+                <p>Tidak. CG adalah komunitas yang terbuka bagi siapa saja dan tidak dikenakan biaya pendaftaran.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah CG hanya untuk anggota gereja tertentu?</strong>
+                <p>Tidak, CG terbuka untuk siapa saja yang ingin bertumbuh dalam iman dan memiliki komunitas yang mendukung.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Bagaimana cara mengetahui jadwal pertemuan CG?</strong>
+                <p>Kamu bisa melihat jadwal pertemuan CG di halaman "Jadwal" pada website ini atau menghubungi koordinator CG terdekat.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apa yang biasanya dilakukan dalam pertemuan CG?</strong>
+                <p>Pertemuan CG biasanya melibatkan sharing firman Tuhan, doa bersama, diskusi topik rohani, serta kegiatan sosial dan kebersamaan.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah saya bisa berpindah dari satu CG ke CG lain?</strong>
+                <p>Ya, jika kamu merasa lebih cocok dengan CG lain, kamu bisa berdiskusi dengan pemimpin CG untuk melakukan perpindahan.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah CG memiliki kegiatan di luar pertemuan rutin?</strong>
+                <p>Ya, CG sering mengadakan kegiatan sosial, rekreasi, dan pelayanan bersama untuk mempererat hubungan antar anggota.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah saya bisa membawa teman yang belum pernah ke CG sebelumnya?</strong>
+                <p>Tentu saja! CG terbuka bagi siapa saja yang ingin bergabung, termasuk teman atau keluarga yang belum pernah menghadiri sebelumnya.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah ada batasan usia untuk bergabung dengan CG?</strong>
+                <p>Tidak ada batasan usia, tetapi biasanya CG dibagi berdasarkan kelompok usia atau tahap kehidupan agar lebih relevan dalam diskusi.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Bagaimana jika saya memiliki pertanyaan atau kesulitan dalam CG?</strong>
+                <p>Kamu bisa bertanya langsung kepada pemimpin CG atau menggunakan fitur forum tanya jawab di halaman ini.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah saya bisa bergabung dengan lebih dari satu CG?</strong>
+                <p>Disarankan untuk fokus pada satu CG agar lebih mendalam dalam komunitas, tetapi kamu tetap bisa mengikuti kegiatan CG lainnya.</p>
+            </div>
+            <div class="faq-item" onclick="toggleFAQ(this)">
+                <strong>Apakah ada syarat khusus untuk menjadi pemimpin CG?</strong>
+                <p>Untuk menjadi pemimpin CG, biasanya kamu perlu melalui proses pembinaan, pelatihan, dan mendapatkan rekomendasi dari pemimpin gereja.</p>
+            </div>
+        
+        <div class="contact-section">
+            <h3>Butuh Bantuan Lebih Lanjut?</h3>
+            <div class="contact-info">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Email Kami</h4>
+                        <p>weconnectcellgroup@gmail.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Telepon</h4>
+                        <p>+62 812-3456-7890</p>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Lokasi</h4>
+                        <p>Jl. Contoh No. 123, Surabaya</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleFAQ(element) {
+            element.classList.toggle('active');
+            const answer = element.querySelector('p');
+            
+            if (element.classList.contains('active')) {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+        
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('strong').textContent.toLowerCase();
+                const answer = item.querySelector('p').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
