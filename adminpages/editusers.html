@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Pengguna | CONGROUP Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text: #333;
+            --border: #ddd;
+            --lightpurple: #A020F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #92dff3, #dbf3fa);
+            color: var(--text);
+            padding: 100px 20px 40px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        form {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #074073;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP Admin</div>
+        <nav>
+            <ul>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Edit Data Pengguna</h1>
+        <form id="editUserForm">
+            <input type="hidden" id="userId" />
+            <div class="form-group">
+                <label for="nama">Nama</label>
+                <input type="text" id="nama" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+                <label for="gender">Jenis Kelamin</label>
+                <select id="gender" required>
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="levelIman">Level Iman</label>
+                <input type="text" id="levelIman" required />
+            </div>
+            <div class="form-group">
+                <label for="profesi">Profesi</label>
+                <input type="text" id="profesi" />
+            </div>
+            <div class="form-group">
+                <label for="nomortelepon">No. Telepon</label>
+                <input type="text" id="nomortelepon" required />
+            </div>
+            <div class="form-group">
+                <label for="tanggalLahir">Tanggal Lahir</label>
+                <input type="date" id="tanggalLahir" required />
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select id="role" required>
+                    <option value="user">User</option>
+                    <option value="anggota">Anggota</option>
+                    <option value="sponsor">Sponsor</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button type="button" onclick="window.location.href='daftarusers.html'" style=" background: #aaa;">Batal</button>
+            <button type="submit">Simpan Perubahan</button>
+        </form>
+    </main>
+
+    <script>
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Pastikan hanya admin yang bisa akses
+        auth.onAuthStateChanged(user => {
+            if (!user) return location.href = 'login.html';
+            db.collection('users').doc(user.uid).get()
+                .then(doc => {
+                    if (!doc.exists || doc.data().role !== 'admin') {
+                        return location.href = 'login.html';
+                    }
+                    loadUserData();
+                });
+        });
+
+        // Ambil ID pengguna dari URL
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get('id');
+
+        // Muat data pengguna untuk edit
+        function loadUserData() {
+            db.collection('users').doc(userId).get()
+                .then(doc => {
+                    if (!doc.exists) {
+                        alert('Pengguna tidak ditemukan');
+                        return window.location.href = 'daftarusers.html';
+                    }
+                    const data = doc.data();
+                    document.getElementById('userId').value = doc.id;
+                    document.getElementById('nama').value = data.nama || '';
+                    document.getElementById('email').value = data.email || '';
+                    document.getElementById('gender').value = data.gender || 'L';
+                    document.getElementById('levelIman').value = data.levelIman || '';
+                    document.getElementById('profesi').value = data.profesi || '';
+                    document.getElementById('nomortelepon').value = data.nomortelepon || '';
+                    document.getElementById('tanggalLahir').value = data.tanggalLahir || '';
+                    document.getElementById('role').value = data.role || 'user';
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Gagal memuat data pengguna.');
+                });
+        }
+
+        // Proses penyimpanan perubahan
+        document.getElementById('editUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const updatedData = {
+                nama: document.getElementById('nama').value,
+                email: document.getElementById('email').value,
+                gender: document.getElementById('gender').value,
+                levelIman: document.getElementById('levelIman').value,
+                profesi: document.getElementById('profesi').value,
+                nomortelepon: document.getElementById('nomortelepon').value,
+                tanggalLahir: document.getElementById('tanggalLahir').value,
+                role: document.getElementById('role').value
+            };
+
+            db.collection('users').doc(userId).update(updatedData)
+                .then(() => {
+                    alert('Data pengguna berhasil diperbarui');
+                    window.location.href = 'daftarusers.html';
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Gagal memperbarui data pengguna.');
+                });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+    </script>
+</body>
+
+</html>

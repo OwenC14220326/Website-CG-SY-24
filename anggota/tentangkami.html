@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Cell Group</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --light: #dbf3fa;
+            --white: #ffffff;
+            --text-dark: #333;
+            --purple: #1e88e5;
+            --purple-dark: #1e88e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: var(--purple-dark);
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--purple-dark);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 24px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-size: 32px;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--light);
+        }
+
+        .section h3 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .section p {
+            color: var(--text-dark);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Visi & Misi Styles */
+        .vision-mission {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .vision,
+        .mission {
+            width: 45%;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .vision i,
+        .mission i {
+            font-size: 40px;
+            color: var(--purple);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        /* Galeri Styles */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Carousel Styles */
+        .member-carousel {
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .member-slide {
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: var(--light);
+            transition: transform 0.3s ease;
+        }
+
+        .member-slide:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 15px;
+            border: 3px solid var(--accent);
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .member-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .member-role {
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        /* Slick Carousel Overrides */
+        .slick-prev,
+        .slick-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .slick-prev:hover,
+        .slick-next:hover {
+            background-color: var(--purple-dark);
+        }
+
+        .slick-prev {
+            left: 10px;
+        }
+
+        .slick-next {
+            right: 10px;
+        }
+
+        .slick-dots {
+            bottom: 10px;
+        }
+
+        .slick-dots li button:before {
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        .slick-dots li.slick-active button:before {
+            color: var(--primary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .vision-mission {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .vision,
+            .mission {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP</div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="tentangkami.html" class="active">Tentang Kami</a></li>
+                <li><a href="bantuan.html">Bantuan</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Tentang Kami</h2>
+
+        <section class="section">
+            <h3>Visi</h3>
+            <div class="vision-mission">
+                <div class="vision">
+                    <i class="fas fa-eye"></i>
+                    <p>Menjadi komunitas yang inklusif dan berdampak positif bagi masyarakat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h3>Misi</h3>
+            <div class="vision-mission">
+                <div class="mission">
+                    <i class="fas fa-tasks"></i>
+                    <p>Menyelenggarakan kegiatan sosial, pendidikan, dan keagamaan yang bermanfaat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h3>Tim Kami</h3>
+            <div class="member-carousel">
+                <!-- Carousel items will be dynamically added here -->
+            </div>
+        </section>
+
+        <section class="section">
+            <h3>Galeri</h3>
+            <div class="gallery">
+                <img src="https://via.placeholder.com/300" alt="Galeri 1">
+                <img src="https://via.placeholder.com/300" alt="Galeri 2">
+                <img src="https://via.placeholder.com/300" alt="Galeri 3">
+                <img src="https://via.placeholder.com/300" alt="Galeri 4">
+                <img src="https://via.placeholder.com/300" alt="Galeri 5">
+                <img src="https://via.placeholder.com/300" alt="Galeri 6">
+            </div>
+        </section>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.appspot.com",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        $(document).ready(function () {
+            db.collection('users')
+                .where('role', 'in', ['anggota', 'sponsor', 'admin'])
+                .get()
+                .then((querySnapshot) => {
+                    const carousel = $('.member-carousel');
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const memberSlide = `
+                            <div class="member-slide">
+                                <div class="member-image">
+                                    <img src="${data.fotoprofil || 'https://via.placeholder.com/150'}" alt="${data.nama}">
+                                </div>
+                                <div class="member-name">${data.nama || '-'}</div>
+                                <div class="member-role">${data.role || '-'}</div>
+                            </div>
+                        `;
+                        carousel.append(memberSlide);
+                    });
+
+                    carousel.slick({
+                        dots: true,
+                        infinite: true,
+                        speed: 300,
+                        slidesToShow: 3,
+                        slidesToScroll: 3,
+                        responsive: [
+                            {
+                                breakpoint: 1024,
+                                settings: {
+                                    slidesToShow: 2,
+                                    slidesToScroll: 2,
+                                    infinite: true,
+                                    dots: true
+                                }
+                            },
+                            {
+                                breakpoint: 600,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            },
+                            {
+                                breakpoint: 480,
+                                settings: {
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1
+                                }
+                            }
+                        ]
+                    });
+                })
+                .catch((error) => {
+                    console.error("Error getting documents: ", error);
+                });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+    </script>
+</body>
+
+</html>

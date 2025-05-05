@@ -1,0 +1,356 @@
+<!-- tabel.html -->
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Pengguna | CONGROUP Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text: #333;
+            --border: #ddd;
+            --lightpurple: #A020F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #92dff3, #dbf3fa);
+            color: var(--text);
+            padding: 100px 20px 40px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 12px 10px;
+            border: 1px solid var(--border);
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .btn-view {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            background: var(--accent);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.1s;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-edit {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #ffd166;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.1s;
+            margin-left: 4px;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            background: #ff4d4d;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.1s;
+            margin-left: 4px;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-1px);
+        }
+
+        .add-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 20px auto 0;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP Admin</div>
+        <nav>
+            <ul>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html">Acara</a></li>
+                <li><a href="daftarusers.html" class="active">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Daftar Semua Pengguna</h1>
+        <table id="usersTable">
+            <thead>
+                <tr>
+                    <th>ID Pengguna</th>
+                    <th>Nama</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Email</th>
+                    <th>Tanggal Lahir</th>
+                    <th>Level Iman</th>
+                    <th>Profesi</th>
+                    <th>Alasan Bergabung</th>
+                    <th>Role</th>
+                    <th>No. Telepon</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button class="add-button" onclick="tambahPengguna()">Tambah Pengguna</button>
+    </main>
+
+    <script>
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+
+        function tambahPengguna() {
+            const konfirmasi = confirm("Menambah pengguna dilakukan melalui halaman Register untuk keamanan. Anda akan diarahkan ke halaman register setelah logout. Lanjutkan?");
+            if (konfirmasi) {
+                // Arahkan ke halaman register
+                window.location.href = "../pendaftaran/register.html";
+            } else {
+                // Tetap di halaman daftar pengguna
+                // Tidak perlu redirect, biarkan kosong
+            }
+        }
+
+        // Pastikan hanya admin yang bisa akses
+        auth.onAuthStateChanged(user => {
+            if (!user) return location.href = 'login.html';
+            db.collection('users').doc(user.uid).get()
+                .then(doc => {
+                    if (!doc.exists || doc.data().role !== 'admin') {
+                        return location.href = 'login.html';
+                    }
+                    loadUsers();
+                });
+        });
+
+        // Load semua pengguna dan render tabel
+        function loadUsers() {
+            const tbody = document.querySelector('#usersTable tbody');
+            // Hapus semua baris yang ada dari tabel
+            tbody.innerHTML = '';
+
+            db.collection('users').get()
+                .then(snapshot => {
+                    snapshot.forEach(doc => {
+                        const d = doc.data();
+                        // format tanggal lahir
+                        let tl = d.tanggalLahir;
+                        if (tl && tl.toDate) tl = tl.toDate();
+                        const tgl = tl
+                            ? new Date(tl).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                            : '-';
+                        // buat row
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                    <td>${doc.id}</td>
+                    <td>${d.nama || '-'}</td>
+                    <td>${d.gender || '-'}</td>
+                    <td>${d.email || '-'}</td>
+                    <td>${tgl}</td>
+                    <td>${(d.levelIman || '-').replace(/CG/, 'CG ')}</td>
+                    <td>${d.profesi || '-'}</td>
+                    <td><button class="btn-view" data-reason="${d.alasan || ''}">Lihat</button></td>
+                    <td>${d.role || '-'}</td>
+                    <td>${d.nomortelepon || '-'}</td>
+                    <td>
+                        <button class="btn-edit" data-id="${doc.id}">Edit</button>
+                        <button class="btn-delete" data-id="${doc.id}">Delete</button>
+                    </td>
+                `;
+                        tbody.appendChild(tr);
+                    });
+                    // pasang listener untuk tombol Lihat
+                    document.querySelectorAll('.btn-view').forEach(btn => {
+                        btn.addEventListener('click', e => {
+                            const alasan = e.currentTarget.dataset.reason;
+                            alert(alasan || 'Tidak ada alasan bergabung.');
+                        });
+                    });
+                    document.querySelectorAll('.btn-edit').forEach(btn => {
+                        btn.addEventListener('click', e => {
+                            const userId = e.currentTarget.dataset.id;
+                            window.location.href = `editusers.html?id=${userId}`;
+                        });
+                    });
+
+                    // Tambahkan event listener untuk tombol Delete
+                    document.querySelectorAll('.btn-delete').forEach(btn => {
+                        btn.addEventListener('click', e => {
+                            const userId = e.currentTarget.dataset.id;
+                            const confirmDelete = confirm('Apakah Anda yakin ingin menghapus pengguna ini?');
+                            if (confirmDelete) {
+                                db.collection('users').doc(userId).delete()
+                                    .then(() => {
+                                        alert('Pengguna berhasil dihapus.');
+                                        loadUsers(); // Muat ulang data setelah penghapusan
+                                    })
+                                    .catch(err => {
+                                        console.error(err);
+                                        alert('Gagal menghapus pengguna.');
+                                    });
+                            }
+                        });
+                    });
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Gagal memuat data pengguna.');
+                });
+        }
+    </script>
+</body>
+
+</html>

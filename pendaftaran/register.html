@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daftar | CONGROUP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+
     <style>
         :root {
             --primary: #0a3d62;
@@ -19,13 +27,13 @@
             --success: #4CAF50;
             --danger: #F44336;
         }
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--secondary), var(--light));
@@ -34,7 +42,7 @@
             line-height: 1.6;
             padding-top: 80px;
         }
-        
+
         /* Header */
         header {
             width: 100%;
@@ -47,16 +55,16 @@
             align-items: center;
             padding: 15px 40px;
             background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: var(--primary);
             letter-spacing: 1px;
         }
-        
+
         nav ul {
             list-style: none;
             display: flex;
@@ -64,7 +72,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         nav a {
             text-decoration: none;
             font-weight: 600;
@@ -74,16 +82,16 @@
             transition: all 0.3s ease;
             padding: 5px 0;
         }
-        
+
         nav a:hover {
             color: var(--purple-dark);
         }
-        
+
         nav a.active {
             color: #1e88e5;
             font-weight: 700;
         }
-        
+
         nav a.active::after {
             content: "";
             display: block;
@@ -95,7 +103,7 @@
             left: 0;
             border-radius: 3px;
         }
-        
+
         /* Main Content */
         main {
             max-width: 1200px;
@@ -103,12 +111,19 @@
             padding: 40px 20px;
             animation: fadeIn 0.5s ease;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .page-title {
             text-align: center;
             color: var(--primary);
@@ -116,7 +131,7 @@
             font-size: 2.2rem;
             position: relative;
         }
-        
+
         .page-title::after {
             content: "";
             display: block;
@@ -126,7 +141,7 @@
             margin: 15px auto;
             border-radius: 2px;
         }
-        
+
         /* Form Container */
         .form-container {
             background: var(--white);
@@ -139,7 +154,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .form-container::before {
             content: "";
             position: absolute;
@@ -149,43 +164,43 @@
             height: 100%;
             background: var(--purple);
         }
-        
+
         .form-header {
             text-align: center;
             margin-bottom: 30px;
         }
-        
+
         .form-header h3 {
             color: var(--primary);
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
-        
+
         .form-header p {
             color: #666;
         }
-        
+
         /* Form Elements */
         .form-group {
             margin-bottom: 25px;
         }
-        
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         label.required::after {
             content: " *";
             color: var(--danger);
         }
-        
+
         .input-field {
             position: relative;
         }
-        
+
         input[type="text"],
         input[type="email"],
         select,
@@ -198,7 +213,7 @@
             transition: all 0.3s ease;
             background-color: #f9f9f9;
         }
-        
+
         input[type="text"]:focus,
         input[type="email"]:focus,
         select:focus,
@@ -208,7 +223,30 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(224, 170, 255, 0.3);
         }
-        
+
+        input[type="text"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--purple);
+            background-color: var(--white);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(224, 170, 255, 0.3);
+        }
+
         .input-field i {
             position: absolute;
             right: 15px;
@@ -216,7 +254,7 @@
             transform: translateY(-50%);
             color: #aaa;
         }
-        
+
         /* Radio and Checkbox Groups */
         .option-group {
             display: flex;
@@ -224,35 +262,35 @@
             gap: 15px;
             margin-top: 5px;
         }
-        
+
         .option-item {
             display: flex;
             align-items: center;
         }
-        
+
         .option-item input {
             margin-right: 8px;
             width: 18px;
             height: 18px;
             accent-color: var(--purple);
         }
-        
+
         /* Date Input Group */
         .date-group {
             display: flex;
             gap: 10px;
         }
-        
+
         .date-group .form-group {
             flex: 1;
         }
-        
+
         /* Textarea */
         textarea {
             resize: vertical;
             min-height: 100px;
         }
-        
+
         /* Button Group */
         .button-group {
             display: flex;
@@ -260,7 +298,7 @@
             gap: 15px;
             margin-top: 30px;
         }
-        
+
         .btn {
             padding: 12px 30px;
             border: none;
@@ -274,97 +312,118 @@
             justify-content: center;
             gap: 8px;
         }
-        
+
         .btn-cancel {
             background-color: #f0f0f0;
             color: var(--text-dark);
         }
-        
+
         .btn-cancel:hover {
             background-color: #e0e0e0;
         }
-        
+
         .btn-submit {
             background-color: var(--purple);
             color: var(--primary);
             box-shadow: 0 4px 15px rgba(224, 170, 255, 0.4);
         }
-        
+
         .btn-submit:hover {
             background-color: var(--purple-dark);
             color: var(--white);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(199, 125, 255, 0.5);
         }
-        
+
         /* Responsive Design */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 padding: 15px;
             }
-            
+
             nav ul {
                 margin-top: 15px;
                 gap: 15px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .form-container {
                 padding: 30px 20px;
             }
-            
+
             .date-group {
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .button-group {
                 flex-direction: column-reverse;
             }
-            
+
             .btn {
                 width: 100%;
             }
         }
-        
+
         @media (max-width: 480px) {
             .option-group {
                 flex-direction: column;
                 gap: 10px;
             }
-            
+
             .page-title {
                 font-size: 1.8rem;
             }
         }
+
+        .date-input {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .date-input:focus {
+            border-color: #0056b3;
+            background-color: #fff;
+        }
+
     </style>
 </head>
+
 <body>
     <header>
         <div class="logo">CONGROUP</div>
         <nav>
             <ul>
-                <li><a href="beranda.html">Home</a></li>
-                <li><a href="jadwal.html">Jadwal</a></li>
-                <li><a href="materi.html">Materi</a></li>
-                <li><a href="daftar.html" class="active">Daftar</a></li>
-                <li><a href="bantuan.html">Bantuan</a></li>
-            </ul>
+                <ul>
+                    <ul>
+                        <li><a href="../landingpage.html">Home</a></li>
+                        <li><a href="register.html" class="active">Daftar</a></li>
+                        <li><a href="login.html">Masuk</a></li>
+                        <li><a href="../bantuan.html">Bantuan</a></li>
+                    </ul>
+                </ul>
         </nav>
     </header>
 
     <main>
-        <h1 class="page-title">Daftar sebagai Anggota Resmi</h1>
-        
         <div class="form-container">
             <div class="form-header">
                 <h3>Formulir Pendaftaran</h3>
                 <p>Bergabunglah dengan komunitas kami dan mulailah perjalanan rohani Anda</p>
             </div>
-            
-            <form>
+
+            <form id="registerForm">
                 <div class="form-group">
                     <label for="nama" class="required">Nama Lengkap</label>
                     <div class="input-field">
@@ -377,60 +436,46 @@
                     <label class="required">Jenis Kelamin</label>
                     <div class="option-group">
                         <label class="option-item">
-                            <input type="radio" name="gender" required> Pria
+                            <input type="radio" name="gender" value="Pria" required> Pria
                         </label>
                         <label class="option-item">
-                            <input type="radio" name="gender" required> Wanita
+                            <input type="radio" name="gender" value="Wanita" required> Wanita
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email" class="required">Email</label>
-                    <div class="input-field">
-                        <input type="email" id="email" placeholder="Masukkan alamat email aktif" required>
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="required">Tanggal Lahir</label>
-                    <div class="date-group">
-                        <div class="form-group">
-                            <input type="text" placeholder="Tanggal" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Bulan" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" placeholder="Tahun" required>
-                        </div>
-                    </div>
-                </div>
+                    <label class="required" for="tanggalLahir">Tanggal Lahir</label>
+                    <input type="date" id="tanggalLahir" name="tanggalLahir" class="form-control date-input" required>
+                </div>                
 
                 <div class="form-group">
                     <label class="required">Level Pertumbuhan Iman</label>
                     <div class="option-group">
                         <label class="option-item">
-                            <input type="radio" name="level" required> CG Pemula
+                            <input type="radio" name="levelIman" value="CGPemula" required> CG Pemula
                         </label>
                         <label class="option-item">
-                            <input type="radio" name="level" required> CG Lanjutan
+                            <input type="radio" name="levelIman" value="CGLanjutan" required> CG Lanjutan
                         </label>
                     </div>
                 </div>
+                
 
                 <div class="form-group">
                     <label class="required">Profesi Saat Ini</label>
                     <div class="option-group">
                         <label class="option-item">
-                            <input type="radio" name="profesi" required> Pekerja
+                            <input type="radio" name="profesi" value="Pekerja" required> Pekerja
                         </label>
                         <label class="option-item">
-                            <input type="radio" name="profesi" required> Mahasiswa
+                            <input type="radio" name="profesi" value="Mahasiswa" required> Mahasiswa
                         </label>
                         <label class="option-item">
-                            <input type="radio" name="profesi" required> SMA/SMP
+                            <input type="radio" name="profesi" value="SMA" required> SMA
+                        </label>
+                        <label class="option-item">
+                            <input type="radio" name="profesi" value="SMP" required> SMP
                         </label>
                     </div>
                 </div>
@@ -440,8 +485,42 @@
                     <textarea id="alasan" placeholder="Ceritakan mengapa Anda ingin bergabung dengan Cell Group kami"></textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="nomortelepon" class="required">WhatsApp / Id Line</label>
+                    <div class="input-field">
+                        <input type="text" id="nomortelepon" placeholder="Masukkan nomor telepon anda" required>
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="required">Email</label>
+                    <div class="input-field">
+                        <input type="email" id="email" placeholder="Masukkan alamat email aktif" required />
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="required">Password</label>
+                    <div class="input-field">
+                        <input type="password" id="password" placeholder="Buat password" required />
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="required">Konfirmasi Password</label>
+                    <div class="input-field">
+                        <input type="password" id="confirmPassword" placeholder="Ulangi password" required />
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+
+                <div id="message" style="color: red; margin-bottom: 15px;"></div>
+
                 <div class="button-group">
-                    <button type="button" class="btn btn-cancel">
+                    <button type="button" class="btn btn-cancel" onclick="window.location.href='tutor.html'">
                         <i class="fas fa-times"></i> Batal
                     </button>
                     <button type="submit" class="btn btn-submit">
@@ -453,13 +532,71 @@
     </main>
 
     <script>
-        // Form validation would go here
-        document.querySelector('form').addEventListener('submit', function(e) {
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+    
+        // Inisialisasi Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    
+        // Tangani submit form
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Validate form fields
-            // If valid, submit the form
-            alert('Pendaftaran berhasil! Kami akan menghubungi Anda segera.');
+    
+            // Ambil data dari form
+            const nama = document.getElementById('nama').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const tanggalLahirRaw = document.getElementById('tanggalLahir').value;
+            const tanggalLahir = new Date(tanggalLahirRaw).toLocaleDateString('id-ID');     
+            const levelIman = document.querySelector('input[name="levelIman"]:checked').value;
+            const profesi = document.querySelector('input[name="profesi"]:checked').value;
+            const alasan = document.getElementById('alasan').value;
+            const nomortelepon = document.getElementById('nomortelepon').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const konfirmasi = document.getElementById('confirmPassword').value;
+    
+            if (password !== konfirmasi) {
+                alert("Password dan konfirmasi tidak cocok!");
+                return;
+            }
+    
+            try {
+                // Buat user di Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const uid = userCredential.user.uid;
+    
+                // Simpan data ke Firestore
+                await db.collection('users').doc(uid).set({
+                    nama,
+                    gender,
+                    tanggalLahir,
+                    levelIman,
+                    profesi,
+                    alasan,
+                    nomortelepon,
+                    email,
+                    role: "user", // role default
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+    
+                alert("Pendaftaran berhasil!");
+                window.location.href = "../landingpage.html";
+            } catch (error) {
+                console.error(error);
+                alert("Terjadi kesalahan: " + error.message);
+            }
         });
     </script>
+    
 </body>
+
 </html>

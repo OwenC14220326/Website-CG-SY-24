@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,13 +18,13 @@
             --purple: #1e88e5;
             --purple-dark: #1e88e5;
         }
-        
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, var(--secondary), var(--light));
@@ -32,9 +33,9 @@
             padding-top: 80px;
             line-height: 1.6;
         }
-        
+
         /* Header */
-         header {
+        header {
             width: 100%;
             position: fixed;
             top: 0;
@@ -45,16 +46,16 @@
             align-items: center;
             padding: 20px 40px;
             background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
-        
+
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: var(--primary);
             letter-spacing: 1px;
         }
-        
+
         nav ul {
             list-style: none;
             display: flex;
@@ -62,7 +63,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         nav a {
             text-decoration: none;
             font-weight: 600;
@@ -72,16 +73,16 @@
             transition: all 0.3s ease;
             padding: 5px 0;
         }
-        
+
         nav a:hover {
             color: var(--purple-dark);
         }
-        
+
         nav a.active {
             color: var(--purple-dark);
             font-weight: 700;
         }
-        
+
         nav a.active::after {
             content: "";
             display: block;
@@ -93,50 +94,50 @@
             left: 0;
             border-radius: 3px;
         }
-        
+
         /* Hero Section */
         .hero {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 80px 10%;
-            background: linear-gradient(135deg, rgba(195, 232, 244, 0.9), rgba(219, 243, 250, 0.9)), 
-                        url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000') center/cover;
+            background: linear-gradient(135deg, rgba(195, 232, 244, 0.9), rgba(219, 243, 250, 0.9)),
+                url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000') center/cover;
             color: var(--primary);
             min-height: 500px;
         }
-        
+
         .hero-text {
             max-width: 50%;
             animation: fadeInLeft 1s ease;
         }
-        
+
         .hero-text h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
             line-height: 1.2;
         }
-        
+
         .hero-text p {
             font-size: 1.1rem;
             margin-bottom: 30px;
         }
-        
+
         .hero-image {
             animation: fadeInRight 1s ease;
         }
-        
+
         .hero-image img {
             width: 350px;
             border-radius: 15px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.5s ease;
         }
-        
+
         .hero-image:hover img {
             transform: scale(1.05);
         }
-        
+
         .btn {
             display: inline-block;
             background: var(--purple);
@@ -151,21 +152,21 @@
             text-decoration: none;
             box-shadow: 0 5px 15px rgba(224, 170, 255, 0.4);
         }
-        
+
         .btn:hover {
             background: var(--purple-dark);
             color: var(--white);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(199, 125, 255, 0.6);
         }
-        
+
         /* Carousel Section */
         .carousel-section {
             padding: 60px 5%;
             background-color: var(--white);
             text-align: center;
         }
-        
+
         .section-title {
             font-size: 2rem;
             color: var(--primary);
@@ -173,7 +174,7 @@
             position: relative;
             display: inline-block;
         }
-        
+
         .section-title::after {
             content: "";
             display: block;
@@ -183,7 +184,7 @@
             margin: 15px auto;
             border-radius: 2px;
         }
-        
+
         .carousel {
             position: relative;
             max-width: 1200px;
@@ -192,24 +193,24 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
         .carousel-container {
             display: flex;
             transition: transform 0.5s ease-in-out;
         }
-        
+
         .carousel-slide {
             min-width: 100%;
             position: relative;
         }
-        
+
         .carousel img {
             width: 100%;
             height: 500px;
             object-fit: cover;
             display: block;
         }
-        
+
         .carousel-caption {
             position: absolute;
             bottom: 0;
@@ -220,13 +221,14 @@
             padding: 20px;
             text-align: left;
         }
-        
+
         .carousel-caption h3 {
             font-size: 1.5rem;
             margin-bottom: 10px;
         }
-        
-        .prev, .next {
+
+        .prev,
+        .next {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -244,21 +246,27 @@
             justify-content: center;
             transition: all 0.3s ease;
         }
-        
-        .prev { left: 20px; }
-        .next { right: 20px; }
-        
-        .prev:hover, .next:hover {
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .prev:hover,
+        .next:hover {
             background: rgba(255, 255, 255, 0.8);
         }
-        
+
         /* Mission Section */
         .mission {
             padding: 80px 5%;
             background-color: var(--light);
             text-align: center;
         }
-        
+
         .mission-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -266,7 +274,7 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .mission-card {
             background-color: var(--white);
             padding: 30px;
@@ -277,12 +285,12 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .mission-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
-        
+
         .mission-card::before {
             content: "";
             position: absolute;
@@ -292,7 +300,7 @@
             height: 100%;
             background: var(--purple);
         }
-        
+
         .mission-card li {
             font-size: 1rem;
             line-height: 1.6;
@@ -301,14 +309,14 @@
             position: relative;
             margin-bottom: 10px;
         }
-        
+
         .mission-card li::before {
             content: "✓";
             color: var(--purple-dark);
             font-weight: bold;
             margin-right: 10px;
         }
-        
+
         /* Footer */
         footer {
             background-color: var(--primary);
@@ -316,7 +324,7 @@
             padding: 60px 10% 30px;
             text-align: center;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -325,76 +333,78 @@
             margin: 0 auto 40px;
             text-align: left;
         }
-        
+
         .footer-column h3 {
             font-size: 1.3rem;
             margin-bottom: 20px;
             color: var(--purple);
         }
-        
+
         .footer-column ul {
             list-style: none;
         }
-        
+
         .footer-column li {
             margin-bottom: 10px;
         }
-        
+
         .footer-column a {
             color: var(--white);
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        
+
         .footer-column a:hover {
             color: var(--purple);
         }
-        
+
         .social-links {
             display: flex;
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .social-links a {
             color: var(--white);
             font-size: 1.5rem;
             transition: color 0.3s ease;
         }
-        
+
         .social-links a:hover {
             color: var(--purple);
         }
-        
+
         .copyright {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
             font-size: 0.9rem;
         }
-        
+
         /* Animations */
         @keyframes fadeInLeft {
             from {
                 opacity: 0;
                 transform: translateX(-50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
             }
         }
-        
+
         @keyframes fadeInRight {
             from {
                 opacity: 0;
                 transform: translateX(50px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
             }
         }
-        
+
         /* Responsive Design */
         @media (max-width: 992px) {
             .hero {
@@ -402,73 +412,73 @@
                 text-align: center;
                 padding: 60px 5%;
             }
-            
+
             .hero-text {
                 max-width: 100%;
                 margin-bottom: 40px;
             }
-            
+
             .carousel img {
                 height: 400px;
             }
         }
-        
+
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
                 padding: 15px;
             }
-            
+
             nav ul {
                 margin-top: 15px;
                 gap: 15px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            
+
             .hero-text h2 {
                 font-size: 2rem;
             }
-            
+
             .hero-image img {
                 width: 280px;
             }
-            
+
             .carousel img {
                 height: 300px;
             }
         }
-        
+
         @media (max-width: 576px) {
             .hero {
                 padding: 40px 5%;
                 min-height: auto;
             }
-            
+
             .hero-text h2 {
                 font-size: 1.8rem;
             }
-            
+
             .section-title {
                 font-size: 1.5rem;
             }
-            
+
             .carousel img {
                 height: 250px;
             }
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <div class="logo">CONGROUP</div>
         <nav>
             <ul>
-                <li><a href="home.html" class="active">Home</a></li>
-                <li><a href="jadwal.html">Jadwal</a></li>
-                <li><a href="materi.html">Materi</a></li>
-                <li><a href="daftar.html">Daftar</a></li>
+                <li><a href="landingpage.html" class="active">Home</a></li>
+                <li><a href="pendaftaran/tutor.html">Daftar</a></li>
+                <li><a href="pendaftaran/login.html">Masuk</a></li>
                 <li><a href="bantuan.html">Bantuan</a></li>
             </ul>
         </nav>
@@ -478,35 +488,39 @@
     <section class="hero">
         <div class="hero-text">
             <h2>VISI CELL GROUP</h2>
-            <p>"Menjadi komunitas yang bertumbuh dalam kasih Kristus, mempererat hubungan antar anggota, dan menjadi terang bagi dunia melalui kehidupan yang memancarkan kasih Tuhan."</p>
-            <a href="#" class="btn">Pelajari Lebih Lanjut</a>
+            <p>"Menjadi komunitas yang bertumbuh dalam kasih Kristus, mempererat hubungan antar anggota, dan menjadi
+                terang bagi dunia melalui kehidupan yang memancarkan kasih Tuhan."</p>
+            <a href="pendaftaran/login.html" class="btn">Pelajari Lebih Lanjut</a>
         </div>
         <div class="hero-image">
-            <img src="https://png.pngtree.com/png-clipart/20230118/original/pngtree-religious-education-and-bible-concept-png-image_8920283.png" alt="Illustrasi komunitas Kristen">
+            <img src="https://png.pngtree.com/png-clipart/20230118/original/pngtree-religious-education-and-bible-concept-png-image_8920283.png"
+                alt="Illustrasi komunitas Kristen">
         </div>
     </section>
 
-    <!-- Carousel Section -->
     <section class="carousel-section">
         <h2 class="section-title">Galeri Kegiatan Kami</h2>
         <div class="carousel">
             <div class="carousel-container">
                 <div class="carousel-slide">
-                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-at-shop-111.jpg" alt="Diskusi Cell Group">
+                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-at-shop-111.jpg"
+                        alt="Diskusi Cell Group">
                     <div class="carousel-caption">
                         <h3>Diskusi Kelompok Kecil</h3>
                         <p>Sharing dan pendalaman firman Tuhan dalam kelompok kecil</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-meal-111.jpg" alt="Persekutuan Makan">
+                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-meal-111.jpg"
+                        alt="Persekutuan Makan">
                     <div class="carousel-caption">
                         <h3>Persekutuan Makan Bersama</h3>
                         <p>Membangun keakraban melalui makan bersama</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://legacynews.id/wp-content/uploads/2021/09/Sean-Feucht-memimpin-ibadah-di-National-Mall-551x381.jpg" alt="Ibadah Umum">
+                    <img src="https://legacynews.id/wp-content/uploads/2021/09/Sean-Feucht-memimpin-ibadah-di-National-Mall-551x381.jpg"
+                        alt="Ibadah Umum">
                     <div class="carousel-caption">
                         <h3>Ibadah Umum</h3>
                         <p>Bersatu dalam penyembahan dan pujian</p>
@@ -518,27 +532,32 @@
         </div>
     </section>
 
-    <!-- Mission Section -->
     <section class="mission">
         <h2 class="section-title">MISI CELL GROUP</h2>
         <div class="mission-grid">
             <div class="mission-card">
-                <li>Membangun Kedekatan dengan Tuhan – Melalui persekutuan rutin, doa bersama, dan pendalaman firman Tuhan untuk memperkuat hubungan pribadi dengan Kristus.</li>
+                <li>Membangun Kedekatan dengan Tuhan – Melalui persekutuan rutin, doa bersama, dan pendalaman firman
+                    Tuhan untuk memperkuat hubungan pribadi dengan Kristus.</li>
             </div>
             <div class="mission-card">
-                <li>Mendorong Pertumbuhan Rohani – Menyediakan bimbingan rohani, renungan harian, dan diskusi firman yang aplikatif untuk kehidupan sehari-hari.</li>
+                <li>Mendorong Pertumbuhan Rohani – Menyediakan bimbingan rohani, renungan harian, dan diskusi firman
+                    yang aplikatif untuk kehidupan sehari-hari.</li>
             </div>
             <div class="mission-card">
-                <li>Mewujudkan Kepedulian Sosial – Mengajak anggota untuk aktif dalam pelayanan dan aksi sosial sebagai wujud kasih Kristus kepada dunia.</li>
+                <li>Mewujudkan Kepedulian Sosial – Mengajak anggota untuk aktif dalam pelayanan dan aksi sosial sebagai
+                    wujud kasih Kristus kepada dunia.</li>
             </div>
             <div class="mission-card">
-                <li>Mengembangkan Komunitas yang Akrab – Menciptakan lingkungan yang hangat dan mendukung untuk berbagi pergumulan dan sukacita.</li>
+                <li>Mengembangkan Komunitas yang Akrab – Menciptakan lingkungan yang hangat dan mendukung untuk berbagi
+                    pergumulan dan sukacita.</li>
             </div>
             <div class="mission-card">
-                <li>Memberitakan Injil – Memampukan setiap anggota untuk menjadi saksi Kristus di lingkungan masing-masing.</li>
+                <li>Memberitakan Injil – Memampukan setiap anggota untuk menjadi saksi Kristus di lingkungan
+                    masing-masing.</li>
             </div>
             <div class="mission-card">
-                <li>Pemuridan – Membimbing anggota untuk bertumbuh menjadi murid Kristus yang sejati dan memuridkan orang lain.</li>
+                <li>Pemuridan – Membimbing anggota untuk bertumbuh menjadi murid Kristus yang sejati dan memuridkan
+                    orang lain.</li>
             </div>
         </div>
     </section>
@@ -557,18 +576,16 @@
             <div class="footer-column">
                 <h3>Kontak</h3>
                 <ul>
-                    <li><i class="fas fa-envelope"></i> weconnectcellgroup@gmail.com</li>
-                    <li><i class="fas fa-phone"></i> +62 812-3456-7890</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Jl. Contoh No. 123, Surabaya</li>
+                    <li><i class="fas fa-phone"></i> +62 878-5295-6100</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jl. Jeruk Pondok Chandra, Surabaya</li>
                 </ul>
             </div>
             <div class="footer-column">
                 <h3>Media Sosial</h3>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a
+                        href="https://www.instagram.com/cgsy.24?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i
+                            class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
@@ -581,26 +598,27 @@
         let currentIndex = 0;
         const slides = document.querySelectorAll('.carousel-slide');
         const totalSlides = slides.length;
-        
+
         function moveSlide(step) {
             currentIndex += step;
-            
+
             if (currentIndex >= totalSlides) {
                 currentIndex = 0;
             } else if (currentIndex < 0) {
                 currentIndex = totalSlides - 1;
             }
-            
+
             const carousel = document.querySelector('.carousel-container');
             carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
         }
-        
+
         // Auto slide every 5 seconds
         setInterval(() => moveSlide(1), 5000);
-        
+
         // Initialize first slide
         moveSlide(0);
     </script>
 
 </body>
+
 </html>

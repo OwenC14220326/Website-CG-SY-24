@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Cell Group</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // 2) Guard: hanya anggota yang boleh akses
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                // belum login
+                window.location.replace('login.html');
+            } else {
+                // ambil role
+                db.collection('users').doc(user.uid).get()
+                    .then(doc => {
+                        const data = doc.data();
+                        if (!doc.exists || data.role !== 'anggota' && doc.role !== 'sponsor') {
+                            // bukan anggota
+                            window.location.replace('login.html');
+                        } else {
+                            // render identitas
+                            document.getElementById('userName').textContent = data.nama || '-';
+                            document.getElementById('userEmail').textContent = data.email || '-';
+                            document.getElementById('userPhone').textContent = data.nomortelepon || '-';
+                            document.getElementById('userLevel').textContent = (data.levelIman || '-').replace(/CG/, 'CG ');
+                        }
+                    });
+            }
+        });
+    </script>
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --light: #dbf3fa;
+            --white: #ffffff;
+            --text-dark: #333;
+            --purple: #1e88e5;
+            --purple-dark: #1e88e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: var(--purple-dark);
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--purple-dark);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 10%;
+            background: linear-gradient(135deg, rgba(195, 232, 244, 0.9), rgba(219, 243, 250, 0.9));
+            color: var(--primary);
+            min-height: 500px;
+            text-align: center;
+        }
+
+        .hero-text {
+            max-width: 80%;
+            margin-bottom: 40px;
+        }
+
+        .hero-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            color: var(--primary);
+            padding: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(224, 170, 255, 0.4);
+            width: 240px;
+            height: 240px;
+            text-align: center;
+        }
+
+        .hero-button i {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-button .description {
+            font-size: 0.9rem;
+            font-weight: normal;
+            margin-top: 5px;
+            color: var(--text-dark);
+        }
+
+        .hero-button:hover {
+            background: var(--purple-dark);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(199, 125, 255, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 60px 10% 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--purple);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--purple);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--purple);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                padding: 60px 5%;
+            }
+
+            .hero-text {
+                max-width: 100%;
+                margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            nav ul {
+                margin-top: 15px;
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-text h2 {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 40px 5%;
+            }
+
+            .hero-text h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Pastikan nav logout jadi tombol id=logoutBtn */
+        #logoutBtn {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">CONGROUP</div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html" class="active">Home</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="tentangkami.html">Tentang Kami</a></li>
+                <li><a href="bantuan.html">Bantuan</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Selamat Datang di CONGROUP</h2>
+            <p>Temukan berbagai sumber daya dan informasi untuk mendukung pertumbuhan rohani Anda.</p>
+        </div>
+        <div class="hero-buttons">
+            <a href="isiberanda/profil.html" class="hero-button">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+                <span class="description">Lihat dan edit informasi profil Anda.</span>
+            </a>
+            <a href="isiberanda/renungan.html" class="hero-button">
+                <i class="fas fa-bible"></i>
+                <span>Renungan</span>
+                <span class="description">Baca renungan harian untuk memperdalam iman.</span>
+            </a>
+            <a href="#" class="hero-button">
+                <i class="fas fa-book"></i>
+                <span>Materi</span>
+                <span class="description">Unduh materi pembelajaran dan sumber daya lainnya.</span>
+            </a>
+            <a href="#" class="hero-button">
+                <i class="fas fa-images"></i>
+                <span>Dokumentasi</span>
+                <span class="description">Lihat galeri foto dan video kegiatan kami.</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Kontak</h3>
+                <ul>
+                    <li><i class="fas fa-phone"></i> +62 878-5295-6100</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Jl. Jeruk Pondok Chandra, Surabaya</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Media Sosial</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/cgsy.24?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 CONGROUP. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

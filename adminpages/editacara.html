@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Acara | CONGROUP Admin</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text: #333;
+            --border: #ddd;
+            --lightpurple: #A020F0;
+            --purple-dark: #5A189A;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #92dff3, #dbf3fa);
+            color: var(--text);
+            padding: 120px 20px 40px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #074073;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP Admin</div>
+        <nav>
+            <ul>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html" class="active">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>Edit Acara</h1>
+    <form id="editForm">
+        <label for="judul">Judul Acara</label>
+        <input type="text" id="judul" required />
+
+        <label for="waktu">Waktu Acara</label>
+        <input type="text" id="waktu" required />
+
+        <label for="alamat">Alamat Acara</label>
+        <input type="text" id="alamat" required />
+
+        <label for="deskripsi">Deskripsi Acara</label>
+        <textarea id="deskripsi" rows="4" required></textarea>
+
+        <label for="gambar">URL Gambar</label>
+        <input type="text" id="gambar" required />
+
+        
+        <button type="button" onclick="window.location.href='daftaracara.html'" style=" background: #aaa;">Batal</button>
+        <button type="submit">Simpan Perubahan</button>
+
+    </form>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const acaraId = urlParams.get("id");
+
+        if (!acaraId) {
+            alert("ID acara tidak ditemukan.");
+            window.location.href = "daftaracara.html";
+        }
+
+        const form = document.getElementById("editForm");
+        const judul = document.getElementById("judul");
+        const waktu = document.getElementById("waktu");
+        const alamat = document.getElementById("alamat");
+        const deskripsi = document.getElementById("deskripsi");
+        const gambar = document.getElementById("gambar");
+
+        db.collection("acara").doc(acaraId).get().then(doc => {
+            if (!doc.exists) {
+                alert("Data acara tidak ditemukan.");
+                return window.location.href = "daftaracara.html";
+            }
+            const data = doc.data();
+            judul.value = data.judul_acara;
+            waktu.value = data.waktu_acara;
+            alamat.value = data.alamat_acara;
+            deskripsi.value = data.deskripsi_acara;
+            gambar.value = data.gambar_acara;
+        });
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            db.collection("acara").doc(acaraId).update({
+                judul_acara: judul.value,
+                waktu_acara: waktu.value,
+                alamat_acara: alamat.value,
+                deskripsi_acara: deskripsi.value,
+                gambar_acara: gambar.value
+            }).then(() => {
+                alert("Acara berhasil diperbarui!");
+                window.location.href = "daftaracara.html";
+            }).catch((err) => {
+                alert("Gagal menyimpan perubahan: " + err.message);
+            });
+        });
+
+        auth.onAuthStateChanged(user => {
+            if (!user) return location.href = 'login.html';
+            db.collection('users').doc(user.uid).get()
+                .then(doc => {
+                    if (!doc.exists || doc.data().role !== 'admin') {
+                        return location.href = 'login.html';
+                    }
+                });
+        });
+    </script>
+</body>
+
+</html>

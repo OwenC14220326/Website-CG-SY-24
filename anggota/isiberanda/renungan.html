@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renungan Harian</title>
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --light: #dbf3fa;
+            --white: #ffffff;
+            --text-dark: #333;
+            --purple: #1e88e5;
+            --purple-dark: #1e88e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--light));
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-top: 80px;
+            line-height: 1.6;
+        }
+
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: var(--purple-dark);
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--purple-dark);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 24px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0a3d62;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            margin-top: 20px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #0a3d62;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #145f8c;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP</div>
+        <nav>
+            <ul>
+                <li><a href="beranda.html" class="active">Home</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="tentangkami.html">Tentang Kami</a></li>
+                <li><a href="bantuan.html">Bantuan</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="../beranda.html" style="
+            background-color: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s ease;">
+            ← Kembali ke Beranda
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="btn-container">
+            <button class="btn" onclick="history.back()">← Kembali</button>
+        </div>
+        <h2>Renungan Harian</h2>
+        <iframe src="https://sabda.org/publikasi/e-rh/arsip/2025/05/05"></iframe>
+    </div>
+</body>
+
+</html>

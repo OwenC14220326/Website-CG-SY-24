@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jawab Pertanyaan | CONGROUP Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text-dark: #333;
+            --success: #4CAF50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--text-dark);
+            padding-top: 80px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 16px;
+            transition: all .3s ease;
+            background: #f9f9f9;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            background: #fff;
+            outline: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .3s ease;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .btn-back {
+            background: #f0f0f0;
+            color: var(--text-dark);
+        }
+
+        .btn-back:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-submit {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-submit:hover {
+            background: #388e3c;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP</div>
+        <nav>
+            <ul>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html" class="active">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Jawab Pertanyaan</h1>
+        <div class="question" id="questionText">Loading question...</div>
+        <form id="answerForm">
+            <div class="form-group">
+                <label for="answer">Tulis jawaban untuk pertanyaan ini:</label>
+                <textarea id="answer" placeholder="Masukkan jawaban..." required></textarea>
+            </div>
+            <button type="button" class="btn btn-back" onclick="window.location.href='jawabqna.html'">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </button>
+            <button type="submit" class="btn btn-submit">
+                <i class="fas fa-check-circle"></i> Simpan Jawaban
+            </button>
+        </form>
+    </main>
+
+    <script>
+        // Firebase init
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check authentication
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                return window.location.href = 'login.html';
+            }
+            db.collection('users').doc(user.uid).get()
+                .then(doc => {
+                    if (!doc.exists || doc.data().role !== 'admin') {
+                        window.location.href = 'login.html';
+                    }
+                });
+        });
+
+        // Get question ID from querystring
+        const params = new URLSearchParams(window.location.search);
+        const questionId = params.get('id');
+        if (!questionId) {
+            alert('ID pertanyaan tidak ditemukan.');
+            window.location.href = 'jawabqna.html';
+        }
+
+        // Load the question
+        db.collection('pertanyaan').doc(questionId).get()
+            .then(doc => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('questionText').innerText = data.pertanyaan;
+                } else {
+                    alert('Pertanyaan tidak ditemukan.');
+                    window.location.href = 'jawabqna.html';
+                }
+            });
+
+        // Handle form submit
+        document.getElementById('answerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const answer = document.getElementById('answer').value.trim();
+            if (!answer) return;
+
+            if (confirm('Anda yakin ingin menyimpan jawaban ini?')) {
+                // Update Firestore: set jawaban untuk pertanyaan
+                db.collection('pertanyaan').doc(questionId).update({
+                    jawaban: answer
+                })
+                    .then(() => {
+                        alert('Jawaban berhasil disimpan.');
+                        window.location.href = 'jawabqna.html';
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    });
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+    </script>
+</body>
+
+</html>

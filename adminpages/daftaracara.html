@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Acara | CONGROUP Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text-dark: #333;
+            --danger: #F44336;
+            --lightpurple: #A020F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--text-dark);
+            padding-top: 80px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .events {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .event-content {
+            padding: 15px;
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .event-detail {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background-color: #f1c40f;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .edit-btn:hover {
+            background-color: #d4ac0d;
+        }
+
+        .delete-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP Admin</div>
+        <nav>
+            <ul>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html" class="active">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="page-title">Daftar Acara</h1>
+        <button onclick="location.href='tambahacara.html'" class="btn-primary">Tambah Acara</button>
+        <div class="events" id="acaraList"></div>
+    </main>
+
+    <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const acaraList = document.getElementById("acaraList");
+
+        // Load acara
+        db.collection("acara").get().then(snapshot => {
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const card = document.createElement("div");
+                card.className = "event-card";
+                card.innerHTML = `
+                    <img src="${data.gambar_acara}" alt="Gambar Acara">
+                    <div class="event-content">
+                        <div class="event-title">${data.judul_acara}</div>
+                        <div class="event-detail"><strong>Waktu:</strong> ${data.waktu_acara}</div>
+                        <div class="event-detail"><strong>Alamat:</strong> ${data.alamat_acara}</div>
+                        <div class="event-detail"><strong>Deskripsi:</strong> ${data.deskripsi_acara}</div>
+                        <div style="margin-top:10px;">
+                            <button class="edit-btn" data-id="${doc.id}">Edit</button>
+                            <button class="delete-btn" data-id="${doc.id}">Hapus</button>
+                        </div>
+                    </div>
+                `;
+
+                card.querySelector("img").addEventListener("click", () => {
+                    document.getElementById("modalImg").src = data.gambar_acara;
+                    document.getElementById("imageModal").style.display = "flex";
+                });
+                document.getElementById("imageModal").addEventListener("click", () => {
+                    document.getElementById("imageModal").style.display = "none";
+                });
+
+                card.querySelector(".edit-btn").addEventListener("click", (e) => {
+                    const docId = e.target.getAttribute("data-id");
+                    window.location.href = `editacara.html?id=${docId}`;
+                });
+
+                card.querySelector(".delete-btn").addEventListener("click", (e) => {
+                    const docId = e.target.getAttribute("data-id");
+                    const confirmDelete = confirm("Apakah Anda yakin ingin menghapus acara ini?");
+                    if (confirmDelete) {
+                        db.collection("acara").doc(docId).delete()
+                            .then(() => {
+                                alert("Acara berhasil dihapus.");
+                                location.reload(); // Refresh halaman setelah hapus
+                            })
+                            .catch(err => {
+                                console.error("Gagal menghapus acara:", err);
+                                alert("Terjadi kesalahan saat menghapus acara.");
+                            });
+                    }
+                });
+                acaraList.appendChild(card);
+            });
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+
+        // Auth check
+        auth.onAuthStateChanged(user => {
+            if (!user) return location.href = 'login.html';
+            db.collection('users').doc(user.uid).get()
+                .then(doc => {
+                    if (!doc.exists || doc.data().role !== 'admin') {
+                        return location.href = 'login.html';
+                    }
+                });
+        });
+    </script>
+
+    <div id="imageModal"
+        style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+        <img id="modalImg" src="" style="max-width:90%; max-height:90%; border-radius:10px;">
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Request Join | CONGROUP Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --primary: #0a3d62;
+            --secondary: #92dff3;
+            --accent: #A0C4FF;
+            --white: #ffffff;
+            --text-dark: #333;
+            --danger: #F44336;
+            --lightpurple: #A020F0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--text-dark);
+            padding-top: 80px;
+        }
+
+        /* Header */
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            position: relative;
+            color: var(--primary);
+            transition: all 0.3s ease;
+            padding: 5px 0;
+        }
+
+        nav a:hover {
+            color: var(--purple-dark);
+        }
+
+        nav a.active {
+            color: #1e88e5;
+            font-weight: 700;
+        }
+
+        nav a.active::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #1e88e5;
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            border-radius: 3px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .requests {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgb(229, 247, 255);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .card.female {
+            background: #FFE0E9;
+        }
+
+        .card .name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card .info {
+            margin-bottom: 4px;
+        }
+
+        .card .label {
+            font-weight: 600;
+        }
+
+        .card .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn.reject {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .btn.accept {
+            background: var(--primary);
+            color: var(--white);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">CONGROUP Admin</div>
+        <nav>
+            <ul>
+                <li><a href="request.html" class="active">Request</a></li>
+                <li><a href="daftaracara.html">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+
+    <main>
+        <h1 class="page-title">List Request Join CG</h1>
+        <div class="requests" id="requestList">
+            <!-- Cards akan di-generate di sini -->
+        </div>
+    </main>
+
+    <script>
+        // Inisialisasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyByfso1DJyvkTbDVWRU7CWbey_YtDWU0nk",
+            authDomain: "cgsy24database.firebaseapp.com",
+            projectId: "cgsy24database",
+            storageBucket: "cgsy24database.firebasestorage.app",
+            messagingSenderId: "566713580003",
+            appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
+            measurementId: "G-R1S4580WJ0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+            if (confirmLogout) {
+                auth.signOut().then(() => window.location.href = '../landingpage.html');
+            }
+        });
+
+
+        // Load requests
+        function loadRequests() {
+            const container = document.getElementById('requestList');
+            db.collection('users').where('role', '==', 'user').get()
+                .then(snapshot => {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const uid = doc.id;
+                        // Tanggal lahir
+                        let dateObj;
+                        if (data.tanggalLahir && data.tanggalLahir.toDate) dateObj = data.tanggalLahir.toDate();
+                        else dateObj = new Date(data.tanggalLahir);
+                        const formattedDate = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+                        // Umur
+                        const usia = Math.floor((new Date() - dateObj) / (365.25 * 24 * 3600 * 1000));
+                        // Card element
+                        const card = document.createElement('div');
+                        card.className = 'card ' + (data.gender === 'Wanita' ? 'female' : '');
+                        card.innerHTML = `
+                            <div class="name">${data.nama} (${usia})</div>
+                            <div class="info"><span class="label">${data.gender}</span></div>
+                            <div class="info"><span class="label">Lahir</span> ${formattedDate}</div>
+                            <div class="info"><span class="label">Level</span> ${data.levelIman.replace(/CG/, 'CG ')}</div>
+                            <div class="info"><span class="label">Profesi</span> ${data.profesi}</div>
+                            <div class="info"><span class="label">Alasan Bergabung:</span><br>${data.alasan}</div>
+                            <div class="actions">
+                                <button class="btn reject" data-id="${uid}">TOLAK</button>
+                                <button class="btn accept" data-id="${uid}">TERIMA</button>
+                            </div>
+                            `;
+                        container.appendChild(card);
+                    });
+                    attachActionListeners();
+                });
+        }
+
+        // Tombol aksi
+        function attachActionListeners() {
+            document.querySelectorAll('.btn.reject').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    const id = e.target.dataset.id;
+                    window.location.href = `tolak.html?id=${id}`;
+                });
+
+            });
+
+            document.querySelectorAll('.btn.accept').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    const id = e.target.dataset.id;
+                    if (confirm("Apakah kamu yakin ingin menerima pengguna ini sebagai anggota?")) {
+                        db.collection('users').doc(id).update({
+                            role: "anggota"
+                        })
+                            .then(() => {
+                                alert("Pengguna berhasil diubah menjadi anggota.");
+                                window.location.reload();
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert("Terjadi kesalahan saat menerima pengguna.");
+                            });
+                    }
+                });
+            });
+        }
+
+
+        // Jalankan
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).get()
+                    .then(doc => {
+                        if (doc.exists && doc.data().role === 'admin') {
+                            loadRequests();
+                        } else {
+                            window.location.href = 'login.html';
+                        }
+                    });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+    </script>
+</body>
+
+</html>

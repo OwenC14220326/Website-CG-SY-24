@@ -35,6 +35,7 @@
             padding-top: 80px;
         }
 
+        /* Consistent Header */
         header {
             width: 100%;
             position: fixed;
@@ -84,11 +85,11 @@
         }
 
         nav a:hover {
-            color: var(--accent);
+            color: #1e88e5;
         }
 
         nav a.active {
-            color: var(--accent);
+            color: #1e88e5;
             font-weight: 700;
         }
 
@@ -97,13 +98,14 @@
             display: block;
             width: 100%;
             height: 3px;
-            background-color: var(--accent);
+            background-color: #1e88e5;
             position: absolute;
             bottom: -5px;
             left: 0;
             border-radius: 3px;
         }
 
+        /* Main Content */
         .page-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -129,6 +131,7 @@
             border-radius: 2px;
         }
 
+        /* FAQ Container */
         .faq-container {
             background: var(--white);
             border-radius: 12px;
@@ -137,6 +140,7 @@
             margin-bottom: 40px;
         }
 
+        /* Search Box */
         .search-box {
             display: flex;
             margin-bottom: 30px;
@@ -170,6 +174,7 @@
             font-size: 18px;
         }
 
+        /* FAQ Items */
         .faq-item {
             background: var(--primary);
             color: var(--white);
@@ -226,6 +231,7 @@
             }
         }
 
+        /* Contact Section */
         .contact-section {
             background: var(--white);
             border-radius: 12px;
@@ -268,6 +274,7 @@
             color: var(--primary);
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -349,20 +356,23 @@
                 appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
                 measurementId: "G-R1S4580WJ0"
             };
-
+    
+            // Initialize Firebase
             firebase.initializeApp(firebaseConfig);
+            const auth = firebase.auth();  // Initialize auth here
             const db = firebase.firestore();
-
+    
+            // Fetch Questions
             function fetchQuestions() {
                 db.collection('pertanyaan').orderBy('timestamp', 'desc').get().then((querySnapshot) => {
                     const qaContainer = document.getElementById('qaContainer');
-                    qaContainer.innerHTML = '';
-
+                    qaContainer.innerHTML = ''; // Clear previous content
+    
                     querySnapshot.forEach((doc) => {
                         const data = doc.data();
                         const question = data.pertanyaan;
                         const answer = data.jawaban;
-
+    
                         const qaItem = document.createElement('div');
                         qaItem.classList.add('faq-item');
                         qaItem.innerHTML = `<strong>${question}</strong><p>${answer}</p>`;
@@ -375,55 +385,40 @@
                     console.error("Error fetching questions: ", error);
                 });
             }
-
+    
+            // Form Submission
             document.getElementById('bantuanForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
-
+    
                 const pertanyaan = document.getElementById('pertanyaan').value;
-
+    
                 try {
                     await db.collection('pertanyaan').add({
                         pertanyaan: pertanyaan + '?',
                         jawaban: "-",
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
-
+    
                     alert('Pertanyaan berhasil dikirim!');
                     document.getElementById('pertanyaan').value = '';
-                    fetchQuestions(); 
+                    fetchQuestions(); // Refresh the displayed questions
                 } catch (error) {
                     alert('Terjadi kesalahan: ' + error.message);
                 }
             });
-
-            fetchQuestions(); 
-        });
-
-        function toggleFAQ(element) {
-            element.classList.toggle('active');
-            const answer = element.querySelector('p');
-
-            if (element.classList.contains('active')) {
-                answer.style.display = 'block';
-            } else {
-                answer.style.display = 'none';
+    
+            fetchQuestions(); // Initial fetch
+    
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) { // Check if the button exists
+                logoutBtn.addEventListener('click', () => {
+                    const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
+                    if (confirmLogout) {
+                        auth.signOut().then(() => window.location.href = '../landingpage.html');
+                    }
+                });
             }
-        }
-
-        document.querySelector('.search-box input').addEventListener('input', function (e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const qaItems = document.querySelectorAll('.qa-item');
-
-            qaItems.forEach(item => {
-                const question = item.querySelector('strong').textContent.toLowerCase();
-                const answer = item.querySelector('p').textContent.toLowerCase();
-
-                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
         });
     </script>
 
@@ -431,10 +426,11 @@
         <div class="logo">CONGROUP</div>
         <nav>
             <ul>
-                <li><a href="landingpage.html">Home</a></li>
-                <li><a href="pendaftaran/tutor.html">Daftar</a></li>
-                <li><a href="pendaftaran/login.html">Masuk</a></li>
+                <li><a href="beranda.html">Home</a></li>
+                <li><a href="jadwal.html">Jadwal</a></li>
+                <li><a href="tentangkami.html">Tentang Kami</a></li>
                 <li><a href="bantuan.html" class="active">Bantuan</a></li>
+                <li><a id="logoutBtn">Logout</a></li>
             </ul>
         </nav>
     </header>
