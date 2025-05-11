@@ -12,13 +12,16 @@
 
     <style>
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
+            --primary: #3e9d4c;
+            --secondary: #6ac57a;
+            --accent: #94e69c;
+            --light-accent: #bdf0be;
+            --lighter: #d8f8d4;
             --white: #ffffff;
             --text-dark: #333;
             --danger: #F44336;
-            --lightpurple: #A020F0;
+            --hoversubmit: #388e3c;
+            --success: #4caf50;
         }
 
         * {
@@ -29,74 +32,69 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            background: var(--lighter);
             color: var(--text-dark);
             padding-top: 80px;
         }
 
-        /* Header */
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
-        nav a:hover {
-            color: var(--purple-dark);
+        nav a:hover{
+            color: var(--light-accent);
         }
 
         nav a.active {
-            color: #1e88e5;
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: #1e88e5;
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
         main {
-            max-width: 1200px;
+            max-width: 90%;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -108,14 +106,19 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--success);
             color: var(--white);
-            padding: 10px 20px;
+            padding: 10px 60px;
             border: none;
             border-radius: 6px;
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
             margin-bottom: 20px;
+        }
+
+        .btn-primary:hover {
+            background: var(--hoversubmit);
         }
 
         .events {
@@ -145,8 +148,8 @@
 
         .event-title {
             font-size: 1.2rem;
-            color: var(--primary);
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .event-detail {
@@ -154,7 +157,13 @@
             font-size: 0.9rem;
         }
 
+        .button-container {
+            margin-top: auto;
+            padding: 10px;
+        }
+
         .edit-btn {
+            width: 100%;
             background-color: #f1c40f;
             color: white;
             border: none;
@@ -169,6 +178,7 @@
         }
 
         .delete-btn {
+            width: 100%;
             background-color: var(--danger);
             color: white;
             border: none;
@@ -176,11 +186,31 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            margin-left: 10px;
+            margin-top: 10px;
         }
 
         .delete-btn:hover {
             background-color: #c0392b;
+        }
+
+        .event-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            margin: 10px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: var(--primary);
+            color: var(--white);
         }
     </style>
 </head>
@@ -190,6 +220,7 @@
         <div class="logo">CONGROUP Admin</div>
         <nav>
             <ul>
+                <li><a href="profile.html">Profile</a></li>
                 <li><a href="request.html">Request</a></li>
                 <li><a href="daftaracara.html" class="active">Acara</a></li>
                 <li><a href="daftarusers.html">Data Pengguna</a></li>
@@ -200,7 +231,17 @@
     </header>
 
     <main>
-        <h1 class="page-title">Daftar Acara</h1>
+        <section
+            style=" background-color: #f9fff9; padding: 20px; border: 1px solid #bdf0be; border-radius: 10px; margin-bottom: 20px;">
+            <h2 style="color: var(--primary); margin-bottom: 10px;">Daftar Acara</h2>
+            <ul style="padding-left: 20px; line-height: 1.6;">
+                <li>Klik <b>Tambah Acara</b> untuk menambahkan acara baru, setelah memencet admin akan diarahkan ke halaman Form Acara.</li>
+                <li>Klik <b>Edit</b> untuk mengubah detail acara yang ingin diubah.</li>
+                <li>Klik <b>Hapus</b> untuk menghapus acara yang ingin dihapus.</li>
+                <li>Anda bisa melihat tampilan poster lebih baik dengan memencet poster yang ingin dilihat.</li>
+                <li>Pastikan Anda sudah login sebagai admin untuk melihat dan mengelola data ini.</li>
+            </ul>
+        </section>
         <button onclick="location.href='tambahacara.html'" class="btn-primary">Tambah Acara</button>
         <div class="events" id="acaraList"></div>
     </main>
@@ -223,23 +264,33 @@
 
         const acaraList = document.getElementById("acaraList");
 
-        // Load acara
-        db.collection("acara").get().then(snapshot => {
+        // Load acara and sort by waktu_acara descending
+        db.collection("acara").orderBy("waktu_acara", "desc").get().then(snapshot => {
             snapshot.forEach(doc => {
                 const data = doc.data();
+
+                // Format the waktu_acara
+                const formattedDate = new Date(data.waktu_acara).toLocaleString('id-ID', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
                 const card = document.createElement("div");
                 card.className = "event-card";
                 card.innerHTML = `
+                    <div class="event-title">${data.judul_acara}</div>
                     <img src="${data.gambar_acara}" alt="Gambar Acara">
                     <div class="event-content">
-                        <div class="event-title">${data.judul_acara}</div>
-                        <div class="event-detail"><strong>Waktu:</strong> ${data.waktu_acara}</div>
+                        <div class="event-detail"><strong>Waktu:</strong> ${formattedDate}</div>
                         <div class="event-detail"><strong>Alamat:</strong> ${data.alamat_acara}</div>
                         <div class="event-detail"><strong>Deskripsi:</strong> ${data.deskripsi_acara}</div>
-                        <div style="margin-top:10px;">
-                            <button class="edit-btn" data-id="${doc.id}">Edit</button>
-                            <button class="delete-btn" data-id="${doc.id}">Hapus</button>
-                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button class="edit-btn" data-id="${doc.id}">Edit</button>
+                        <button class="delete-btn" data-id="${doc.id}">Hapus</button>
                     </div>
                 `;
 

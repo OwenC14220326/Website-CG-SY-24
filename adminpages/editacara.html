@@ -8,16 +8,21 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
 
     <style>
         :root {
-            --primary: #0a3d62;
-            --accent: #A0C4FF;
+            --primary: #3e9d4c;
+            --secondary: #6ac57a;
+            --accent: #94e69c;
+            --light-accent: #bdf0be;
+            --lighter: #d8f8d4;
             --white: #ffffff;
-            --text: #333;
+            --text-dark: #333;
+            --danger: #F44336;
             --border: #ddd;
-            --lightpurple: #A020F0;
-            --purple-dark: #5A189A;
+            --hoversubmit: #388e3c;
+            --success: #4caf50;
         }
 
         * {
@@ -28,69 +33,65 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #92dff3, #dbf3fa);
+            background: var(--lighter);
             color: var(--text);
             padding: 120px 20px 40px;
+        
         }
 
-        /* Header */
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
-        nav a:hover {
-            color: var(--purple-dark);
+        nav a:hover{
+            color: var(--light-accent);
         }
 
         nav a.active {
-            color: #1e88e5;
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: #1e88e5;
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
@@ -102,7 +103,7 @@
         }
 
         form {
-            max-width: 600px;
+            max-width: 60%;
             margin: auto;
             background: white;
             padding: 30px;
@@ -111,13 +112,17 @@
         }
 
         label {
-            font-weight: bold;
+            font-weight: 600;
             display: block;
             margin-top: 15px;
         }
 
-        input,
+        input[type="text"],
+        input[type="file"],
+        input[type="date"],
+        input[type="time"],
         textarea {
+            font-family: 'Segoe UI', sans-serif;
             width: 100%;
             padding: 10px;
             margin-top: 5px;
@@ -125,10 +130,16 @@
             border-radius: 6px;
         }
 
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+
         button {
             margin-top: 20px;
             padding: 10px 20px;
-            background: var(--primary);
+            background: var(--success);
             color: white;
             border: none;
             border-radius: 6px;
@@ -137,7 +148,7 @@
         }
 
         button:hover {
-            background: #074073;
+            background: var(--hoversubmit);
         }
     </style>
 </head>
@@ -147,6 +158,7 @@
         <div class="logo">CONGROUP Admin</div>
         <nav>
             <ul>
+                <li><a href="profile.html">Profile</a></li>
                 <li><a href="request.html">Request</a></li>
                 <li><a href="daftaracara.html" class="active">Acara</a></li>
                 <li><a href="daftarusers.html">Data Pengguna</a></li>
@@ -156,27 +168,30 @@
         </nav>
     </header>
 
-    <h1>Edit Acara</h1>
     <form id="editForm">
+        <h1>Edit Acara</h1>
         <label for="judul">Judul Acara</label>
         <input type="text" id="judul" required />
 
-        <label for="waktu">Waktu Acara</label>
-        <input type="text" id="waktu" required />
+        <label for="tanggal">Tanggal Acara</label>
+        <input type="date" id="tanggal" required />
+
+        <label for="jam">Jam Acara</label>
+        <input type="time" id="jam" required />
 
         <label for="alamat">Alamat Acara</label>
         <input type="text" id="alamat" required />
 
+        <label for="gambar">Upload Gambar (kosongkan jika tidak ingin mengganti)</label>
+        <input type="file" id="gambar" accept="image/*" />
+
+        <img id="currentImage" src="" alt="Current Gambar Acara" style="display:none;" />
+
         <label for="deskripsi">Deskripsi Acara</label>
         <textarea id="deskripsi" rows="4" required></textarea>
 
-        <label for="gambar">URL Gambar</label>
-        <input type="text" id="gambar" required />
-
-        
         <button type="button" onclick="window.location.href='daftaracara.html'" style=" background: #aaa;">Batal</button>
         <button type="submit">Simpan Perubahan</button>
-
     </form>
 
     <script>
@@ -204,10 +219,12 @@
 
         const form = document.getElementById("editForm");
         const judul = document.getElementById("judul");
-        const waktu = document.getElementById("waktu");
+        const tanggal = document.getElementById("tanggal");
+        const jam = document.getElementById("jam");
         const alamat = document.getElementById("alamat");
         const deskripsi = document.getElementById("deskripsi");
         const gambar = document.getElementById("gambar");
+        const currentImage = document.getElementById("currentImage");
 
         db.collection("acara").doc(acaraId).get().then(doc => {
             if (!doc.exists) {
@@ -216,26 +233,45 @@
             }
             const data = doc.data();
             judul.value = data.judul_acara;
-            waktu.value = data.waktu_acara;
+            const dateTime = new Date(data.waktu_acara);
+            tanggal.value = dateTime.toISOString().split('T')[0]; // Format YYYY-MM-DD
+            jam.value = dateTime.toTimeString().split(' ')[0].slice(0, 5); // Format HH:MM
             alamat.value = data.alamat_acara;
             deskripsi.value = data.deskripsi_acara;
-            gambar.value = data.gambar_acara;
+            currentImage.src = data.gambar_acara; // Set existing image source
+            currentImage.style.display = 'block'; // Show the image
         });
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();
-            db.collection("acara").doc(acaraId).update({
+            const waktuAcara = `${tanggal.value}T${jam.value}`;
+            const gambarFile = gambar.files[0];
+
+            const updateData = {
                 judul_acara: judul.value,
-                waktu_acara: waktu.value,
+                waktu_acara: waktuAcara,
                 alamat_acara: alamat.value,
-                deskripsi_acara: deskripsi.value,
-                gambar_acara: gambar.value
-            }).then(() => {
-                alert("Acara berhasil diperbarui!");
-                window.location.href = "daftaracara.html";
-            }).catch((err) => {
-                alert("Gagal menyimpan perubahan: " + err.message);
-            });
+                deskripsi_acara: deskripsi.value
+            };
+
+            if (gambarFile) {
+                const reader = new FileReader();
+                reader.onloadend = async () => {
+                    updateData.gambar_acara = reader.result;
+                    await db.collection("acara").doc(acaraId).update(updateData);
+                    alert("Acara berhasil diperbarui!");
+                    window.location.href = "daftaracara.html";
+                };
+                reader.readAsDataURL(gambarFile);
+            } else {
+                db.collection("acara").doc(acaraId).update(updateData)
+                    .then(() => {
+                        alert("Acara berhasil diperbarui!");
+                        window.location.href = "daftaracara.html";
+                    }).catch((err) => {
+                        alert("Gagal menyimpan perubahan: " + err.message);
+                    });
+            }
         });
 
         auth.onAuthStateChanged(user => {

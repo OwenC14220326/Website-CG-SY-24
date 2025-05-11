@@ -12,13 +12,13 @@
 
     <style>
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
-            --light: #dbf3fa;
-            --white: #ffffff;
+            --primary: #3b7b68;
+            --secondary: #67aa9f;
+            --accent: #91cabc;
+            --light: #b9e4d4;
+            --lighter: #d6f2e5;
+            --white: #f0f3fa;
             --text-dark: #333;
-            --text-light: #f8f9fa;
         }
 
         * {
@@ -29,83 +29,99 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--secondary), var(--light));
+            background: var(--lighter);
             color: var(--text-dark);
             min-height: 100vh;
             line-height: 1.6;
             padding-top: 80px;
         }
 
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
         nav a:hover {
-            color: #1e88e5;
+            color: var(--light);
         }
 
         nav a.active {
-            color: #1e88e5;
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: #1e88e5;
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
-        .page-container {
-            max-width: 1200px;
+        main {
+            max-width: 90%;
             margin: 0 auto;
             padding: 40px 20px;
         }
 
         .page-title {
+            text-align: center;
+            font-size: 2rem;
             color: var(--primary);
-            font-size: 2.2rem;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            background: var(--white);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            background: var(--success);
+            color: var(--white);
+            padding: 10px 60px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary:hover {
+            background: var(--hoversubmit);
         }
 
         .events {
@@ -135,19 +151,74 @@
 
         .event-title {
             font-size: 1.2rem;
-            color: var(--primary);
             margin-bottom: 10px;
+            font-weight: bold;
         }
 
         .event-detail {
             margin-bottom: 8px;
             font-size: 0.9rem;
         }
+
+        .button-container {
+            margin-top: auto;
+            padding: 10px;
+        }
+
+        .edit-btn {
+            width: 100%;
+            background-color: #f1c40f;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .edit-btn:hover {
+            background-color: #d4ac0d;
+        }
+
+        .delete-btn {
+            width: 100%;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .event-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .event-title {
+            font-size: 1.5rem;
+            margin: 10px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            background-color: var(--primary);
+            color: var(--white);
+        }
     </style>
 </head>
 
 <body>
-
     <header>
         <div class="logo">CONGROUP</div>
         <nav>
@@ -189,9 +260,9 @@
                 const card = document.createElement("div");
                 card.className = "event-card";
                 card.innerHTML = `
-            <img src="${data.gambar_acara}" alt="Gambar Acara">
             <div class="event-content">
                 <div class="event-title">${data.judul_acara}</div>
+                <img src="${data.gambar_acara}" alt="Gambar Acara">
                 <div class="event-detail"><strong>Waktu:</strong> ${data.waktu_acara}</div>
                 <div class="event-detail"><strong>Alamat:</strong> ${data.alamat_acara}</div>
                 <div class="event-detail"><strong>Deskripsi:</strong> ${data.deskripsi_acara}</div>

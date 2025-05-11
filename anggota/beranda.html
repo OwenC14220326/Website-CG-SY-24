@@ -32,7 +32,7 @@
                 db.collection('users').doc(user.uid).get()
                     .then(doc => {
                         const data = doc.data();
-                        if (!doc.exists || data.role !== 'anggota' && doc.role !== 'sponsor') {
+                        if (!doc.exists || data.role !== 'anggota' && data.role !== 'sponsor') {
                             // bukan anggota
                             window.location.replace('login.html');
                         } else {
@@ -48,14 +48,13 @@
     </script>
     <style>
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
-            --light: #dbf3fa;
-            --white: #ffffff;
+            --primary: #3b7b68;
+            --secondary: #67aa9f;
+            --accent: #91cabc;
+            --light: #b9e4d4;
+            --lighter: #d6f2e5;
+            --white: #f0f3fa;
             --text-dark: #333;
-            --purple: #1e88e5;
-            --purple-dark: #1e88e5;
         }
 
         * {
@@ -66,71 +65,66 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--secondary), var(--light));
+            background: var(--lighter);
             color: var(--text-dark);
             min-height: 100vh;
             padding-top: 80px;
             line-height: 1.6;
         }
 
-        /* Header */
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
         nav a:hover {
-            color: var(--purple-dark);
+            color: var(--light);
         }
 
         nav a.active {
-            color: var(--purple-dark);
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--purple-dark);
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
@@ -141,7 +135,7 @@
             align-items: center;
             justify-content: center;
             padding: 80px 10%;
-            background: linear-gradient(135deg, rgba(195, 232, 244, 0.9), rgba(219, 243, 250, 0.9));
+            background: var(--lighter);
             color: var(--primary);
             min-height: 500px;
             text-align: center;
@@ -204,8 +198,7 @@
         }
 
         .hero-button:hover {
-            background: var(--purple-dark);
-            color: var(--white);
+            background: var(--light);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(199, 125, 255, 0.6);
         }
@@ -230,7 +223,7 @@
         .footer-column h3 {
             font-size: 1.3rem;
             margin-bottom: 20px;
-            color: var(--purple);
+            color: var(--lighter);
         }
 
         .footer-column ul {
@@ -248,7 +241,7 @@
         }
 
         .footer-column a:hover {
-            color: var(--purple);
+            color: var(--lighter);
         }
 
         .social-links {
@@ -264,7 +257,7 @@
         }
 
         .social-links a:hover {
-            color: var(--purple);
+            color: var(--lighter);
         }
 
         .copyright {
@@ -370,16 +363,6 @@
                 <span>Renungan</span>
                 <span class="description">Baca renungan harian untuk memperdalam iman.</span>
             </a>
-            <a href="#" class="hero-button">
-                <i class="fas fa-book"></i>
-                <span>Materi</span>
-                <span class="description">Unduh materi pembelajaran dan sumber daya lainnya.</span>
-            </a>
-            <a href="#" class="hero-button">
-                <i class="fas fa-images"></i>
-                <span>Dokumentasi</span>
-                <span class="description">Lihat galeri foto dan video kegiatan kami.</span>
-            </a>
         </div>
     </section>
 
@@ -396,7 +379,9 @@
             <div class="footer-column">
                 <h3>Media Sosial</h3>
                 <div class="social-links">
-                    <a href="https://www.instagram.com/cgsy.24?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fab fa-instagram"></i></a>
+                    <a
+                        href="https://www.instagram.com/cgsy.24?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i
+                            class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>

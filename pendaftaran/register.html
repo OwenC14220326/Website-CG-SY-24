@@ -15,15 +15,14 @@
 
     <style>
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
-            --light: #dbf3fa;
-            --white: #ffffff;
-            --text-dark: #333;
-            --text-light: #f8f9fa;
+            --primary: #395886;
+            --secondary: #628fca;
+            --accent: #8baee0;
+            --light: #b2caf0;
+            --white: #f0f3fa;
+            --text-dark: #395886;
+            --text-light: #ffffff;
             --purple: #1e88e5;
-            --purple-dark: #1e88e5;
             --success: #4CAF50;
             --danger: #F44336;
         }
@@ -36,71 +35,66 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--secondary), var(--light));
+            background: var(--light);
             color: var(--text-dark);
             min-height: 100vh;
             line-height: 1.6;
             padding-top: 80px;
         }
 
-        /* Header */
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
-        nav a:hover {
-            color: var(--purple-dark);
+        nav a:hover{
+            color: var(--light);
         }
 
         nav a.active {
-            color: #1e88e5;
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: #1e88e5;
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
@@ -314,7 +308,7 @@
         }
 
         .btn-cancel {
-            background-color: #f0f0f0;
+            background-color: var(--light);
             color: var(--text-dark);
         }
 
@@ -323,13 +317,13 @@
         }
 
         .btn-submit {
-            background-color: var(--purple);
-            color: var(--primary);
+            background-color: var(--primary);
+            color: var(--white);
             box-shadow: 0 4px 15px rgba(224, 170, 255, 0.4);
         }
 
         .btn-submit:hover {
-            background-color: var(--purple-dark);
+            background-color: var(--purple);
             color: var(--white);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(199, 125, 255, 0.5);
@@ -396,7 +390,6 @@
             border-color: #0056b3;
             background-color: #fff;
         }
-
     </style>
 </head>
 
@@ -447,7 +440,7 @@
                 <div class="form-group">
                     <label class="required" for="tanggalLahir">Tanggal Lahir</label>
                     <input type="date" id="tanggalLahir" name="tanggalLahir" class="form-control date-input" required>
-                </div>                
+                </div>
 
                 <div class="form-group">
                     <label class="required">Level Pertumbuhan Iman</label>
@@ -460,7 +453,7 @@
                         </label>
                     </div>
                 </div>
-                
+
 
                 <div class="form-group">
                     <label class="required">Profesi Saat Ini</label>
@@ -482,7 +475,8 @@
 
                 <div class="form-group">
                     <label for="alasan">Alasan Bergabung</label>
-                    <textarea id="alasan" placeholder="Ceritakan mengapa Anda ingin bergabung dengan Cell Group kami"></textarea>
+                    <textarea id="alasan"
+                        placeholder="Ceritakan mengapa Anda ingin bergabung dengan Cell Group kami"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -541,21 +535,21 @@
             appId: "1:566713580003:web:ef7aebcb040953644ac8d6",
             measurementId: "G-R1S4580WJ0"
         };
-    
+
         // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-    
+
         // Tangani submit form
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-    
+
             // Ambil data dari form
             const nama = document.getElementById('nama').value;
             const gender = document.querySelector('input[name="gender"]:checked').value;
             const tanggalLahirRaw = document.getElementById('tanggalLahir').value;
-            const tanggalLahir = new Date(tanggalLahirRaw).toLocaleDateString('id-ID');     
+            const tanggalLahir = new Date(tanggalLahirRaw); // Simpan sebagai objek Date   
             const levelIman = document.querySelector('input[name="levelIman"]:checked').value;
             const profesi = document.querySelector('input[name="profesi"]:checked').value;
             const alasan = document.getElementById('alasan').value;
@@ -563,22 +557,22 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const konfirmasi = document.getElementById('confirmPassword').value;
-    
+
             if (password !== konfirmasi) {
                 alert("Password dan konfirmasi tidak cocok!");
                 return;
             }
-    
+
             try {
                 // Buat user di Auth
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const uid = userCredential.user.uid;
-    
+
                 // Simpan data ke Firestore
                 await db.collection('users').doc(uid).set({
                     nama,
                     gender,
-                    tanggalLahir,
+                    tanggalLahir: firebase.firestore.Timestamp.fromDate(tanggalLahir), // Simpan sebagai timestamp
                     levelIman,
                     profesi,
                     alasan,
@@ -587,7 +581,7 @@
                     role: "user", // role default
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-    
+
                 alert("Pendaftaran berhasil!");
                 window.location.href = "../landingpage.html";
             } catch (error) {
@@ -596,7 +590,7 @@
             }
         });
     </script>
-    
+
 </body>
 
 </html>

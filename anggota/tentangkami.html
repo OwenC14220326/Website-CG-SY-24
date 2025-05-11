@@ -8,20 +8,21 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
     <style>
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
-            --light: #dbf3fa;
-            --white: #ffffff;
+            --primary: #3b7b68;
+            --secondary: #67aa9f;
+            --accent: #91cabc;
+            --light: #b9e4d4;
+            --lighter: #d6f2e5;
+            --white: #f0f3fa;
             --text-dark: #333;
-            --purple: #1e88e5;
-            --purple-dark: #1e88e5;
         }
+
 
         * {
             box-sizing: border-box;
@@ -38,69 +39,64 @@
             line-height: 1.6;
         }
 
-        /* Header */
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
         nav a:hover {
-            color: var(--purple-dark);
+            color: var(--light);
         }
 
         nav a.active {
-            color: var(--purple-dark);
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--purple-dark);
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 90%;
             margin: 0 auto;
             margin-top: 24px;
             background: var(--white);
@@ -234,7 +230,6 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 1;
-            background: var(--primary);
             color: var(--white);
             border: none;
             padding: 10px 15px;
@@ -257,7 +252,7 @@
         }
 
         .slick-dots {
-            bottom: 10px;
+            bottom: -36px;
         }
 
         .slick-dots li button:before {
@@ -282,6 +277,16 @@
                 margin-bottom: 20px;
             }
         }
+
+        .page-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: var(--white);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
@@ -299,9 +304,9 @@
         </nav>
     </header>
 
-    <div class="container">
-        <h2>Tentang Kami</h2>
 
+    <div class="container">
+        <h1 class="page-title">Tentang Kami</h1>
         <section class="section">
             <h3>Visi</h3>
             <div class="vision-mission">
@@ -332,14 +337,26 @@
         <section class="section">
             <h3>Galeri</h3>
             <div class="gallery">
-                <img src="https://via.placeholder.com/300" alt="Galeri 1">
-                <img src="https://via.placeholder.com/300" alt="Galeri 2">
-                <img src="https://via.placeholder.com/300" alt="Galeri 3">
-                <img src="https://via.placeholder.com/300" alt="Galeri 4">
-                <img src="https://via.placeholder.com/300" alt="Galeri 5">
-                <img src="https://via.placeholder.com/300" alt="Galeri 6">
+                <img src="../galeri/event1.png" alt="Galeri 1" class="gallery-img">
+                <img src="../galeri/ibadahumum1.png" alt="Galeri 2" class="gallery-img">
+                <img src="../galeri/persekutuanmakan1.png" alt="Galeri 3" class="gallery-img">
+                <img src="../galeri/sharing1.png" alt="Galeri 4" class="gallery-img">
+                <img src="../galeri/kumpul1.png" alt="Galeri 5" class="gallery-img">
+                <img src="../galeri/kumpul2.png" alt="Galeri 6" class="gallery-img">
+                <img src="../galeri/kumpul3.png" alt="Galeri 7" class="gallery-img">
+                <img src="../galeri/ibadahumum2.png" alt="Galeri 8" class="gallery-img">
+                <img src="../galeri/olahraga.png" alt="Galeri 9" class="gallery-img">
+                <img src="../galeri/kumpul4.png" alt="Galeri 10" class="gallery-img">
+                <img src="../galeri/kumpul5.png" alt="Galeri 11" class="gallery-img">
+                <img src="../galeri/kumpul6.png" alt="Galeri 12" class="gallery-img">
+                <img src="../galeri/kumpul7.png" alt="Galeri 13" class="gallery-img">
             </div>
         </section>
+
+        <div id="imageModal"
+            style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center;">
+            <img id="modalImg" src="" style="max-width:90%; max-height:90%; border-radius:10px;">
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -354,6 +371,7 @@
             appId: "1:566713580003:web:ef7aebcb040953644ac8d6"
         };
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const db = firebase.firestore();
 
         $(document).ready(function () {
@@ -414,6 +432,19 @@
                 });
         });
 
+        document.querySelectorAll('.gallery-img').forEach(img => {
+            img.addEventListener('click', function () {
+                const src = this.src;
+                document.getElementById("modalImg").src = src;
+                document.getElementById("imageModal").style.display = "flex";
+            });
+        });
+
+        document.getElementById("imageModal").addEventListener("click", () => {
+            document.getElementById("imageModal").style.display = "none";
+        });
+
+        // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
             if (confirmLogout) {

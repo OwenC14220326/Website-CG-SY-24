@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Anggota - Cell Group</title>
+    <title>Profil Admin - Cell Group</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --hoverprimary: #2a5b4d;
-            --primary: #3b7b68;
-            --secondary: #67aa9f;
-            --accent: #91cabc;
-            --light: #b9e4d4;
+            --hoverprimary: #388e3c;
+            --primary: #3e9d4c;
+            --secondary: #6ac57a;
+            --accent: #94e69c;
+            --light: #d8f8d4;
             --lighter: #d6f2e5;
             --white: #f0f3fa;
             --text-dark: #333;
@@ -29,7 +29,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--secondary), var(--light));
+            background: var(--lighter);
             color: var(--text-dark);
             min-height: 100vh;
             padding-top: 80px;
@@ -250,45 +250,26 @@
             margin-top: 5px;
             font-size: 14px;
         }
-
-        .kembali-button{
-            background-color: var(--primary);
-            color: var(--white);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background 0.3s ease;
-        }
-
-        .kembali-button:hover{
-            background: var(--hoverprimary);
-        }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="logo">CONGROUP</div>
+        <div class="logo">CONGROUP Admin</div>
         <nav>
             <ul>
-                <li><a href="../beranda.html" class="active">Home</a></li>
-                <li><a href="../jadwal.html">Jadwal</a></li>
-                <li><a href="../tentangkami.html">Tentang Kami</a></li>
-                <li><a href="../bantuan.html">Bantuan</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+                <li><a href="request.html">Request</a></li>
+                <li><a href="daftaracara.html">Acara</a></li>
+                <li><a href="daftarusers.html">Data Pengguna</a></li>
+                <li><a href="jawabqna.html">QnA</a></li>
                 <li><a id="logoutBtn">Logout</a></li>
             </ul>
         </nav>
     </header>
 
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="../beranda.html" class="kembali-button">
-            ← Kembali ke Beranda
-        </a>
-    </div>
-
     <div class="container">
-        <h2>Profil Anggota</h2>
+        <h2>Profil Admin</h2>
 
         <div class="profile-section">
             <div class="profile-avatar-wrapper">
@@ -320,6 +301,8 @@
             <div id="gender"></div>
             <label><i class="fas fa-calendar-alt"></i> Tanggal Lahir:</label>
             <div id="tglLahir"></div>
+            <label><i class="fas fa-shield-alt"></i> Role:</label>
+            <div id="role"></div>  <!-- New field for admin role -->
         </div>
     </div>
 
@@ -336,22 +319,12 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Fungsi untuk mengubah gambar menjadi Base64
-        function imageToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        }
-
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = 'login.html';
             } else {
                 db.collection('users').doc(user.uid).get().then(doc => {
-                    if (!doc.exists || (doc.data().role !== 'anggota' && doc.data().role !== 'sponsor')) {
+                    if (!doc.exists || doc.data().role !== 'admin') {
                         window.location.href = 'login.html';
                     } else {
                         const data = doc.data();
@@ -361,6 +334,7 @@
                         document.getElementById('level').textContent = (data.levelIman || '-').replace(/CG/, 'CG ');
                         document.getElementById('gender').textContent = data.gender || '-';
                         document.getElementById('tglLahir').textContent = data.tanggalLahir || '-';
+                        document.getElementById('role').textContent = data.role || '-';  // Display admin role
 
                         if (data.fotoprofil) {
                             document.getElementById('profileImage').src = data.fotoprofil;

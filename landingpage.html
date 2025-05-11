@@ -7,18 +7,18 @@
     <title>Beranda - Cell Group</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* ======= Root Colors ======= */
         :root {
-            --primary: #0a3d62;
-            --secondary: #92dff3;
-            --accent: #A0C4FF;
-            --light: #dbf3fa;
-            --white: #ffffff;
-            --text-dark: #333;
-            --text-light: #f8f9fa;
-            --purple: #1e88e5;
-            --purple-dark: #1e88e5;
+            --primary: #395886;
+            --secondary: #628fca;
+            --accent: #8baee0;
+            --light: #b2caf0;
+            --white: #f0f3fa;
+            --text-dark: #395886;
+            --text-light: #ffffff;
         }
 
+        /* ======= Reset and Base ======= */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -30,78 +30,84 @@
             background: linear-gradient(135deg, var(--secondary), var(--light));
             color: var(--text-dark);
             min-height: 100vh;
-            padding-top: 80px;
             line-height: 1.6;
+            padding-top: 80px;
         }
 
-        /* Header */
+        a,
+        button {
+            transition: 0.3s ease;
+        }
+
+        a:focus,
+        button:focus {
+            outline: 2px dashed var(--accent);
+            outline-offset: 4px;
+        }
+
+        /* ======= Header ======= */
         header {
-            width: 100%;
+            background-color: var(--primary);
+            color: var(--white);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 40px;
-            background-color: var(--white);
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--white);
             letter-spacing: 1px;
         }
 
         nav ul {
-            list-style: none;
             display: flex;
+            list-style: none;
             gap: 30px;
-            margin: 0;
-            padding: 0;
         }
 
         nav a {
+            color: var(--white);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
             position: relative;
-            color: var(--primary);
-            transition: all 0.3s ease;
             padding: 5px 0;
         }
 
-        nav a:hover {
-            color: var(--purple-dark);
+        nav a:hover{
+            color: var(--light);
         }
 
         nav a.active {
-            color: var(--purple-dark);
-            font-weight: 700;
+            color: var(--white);
         }
 
         nav a.active::after {
             content: "";
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: var(--purple-dark);
             position: absolute;
             bottom: -5px;
             left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
             border-radius: 3px;
         }
 
-        /* Hero Section */
+        /* ======= Hero Section ======= */
         .hero {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 80px 10%;
-            background: linear-gradient(135deg, rgba(195, 232, 244, 0.9), rgba(219, 243, 250, 0.9)),
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), var(--white)),
                 url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000') center/cover;
             color: var(--primary);
             min-height: 500px;
@@ -115,7 +121,6 @@
         .hero-text h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
-            line-height: 1.2;
         }
 
         .hero-text p {
@@ -123,47 +128,47 @@
             margin-bottom: 30px;
         }
 
-        .hero-image {
-            animation: fadeInRight 1s ease;
-        }
-
-        .hero-image img {
-            width: 350px;
-            border-radius: 15px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.5s ease;
-        }
-
-        .hero-image:hover img {
-            transform: scale(1.05);
-        }
-
         .btn {
-            display: inline-block;
-            background: var(--purple);
-            color: var(--primary);
+            background-color: var(--accent);
+            color: var(--white);
             padding: 12px 30px;
             font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            font-weight: 600;
             text-decoration: none;
+            border: none;
             box-shadow: 0 5px 15px rgba(224, 170, 255, 0.4);
+            cursor: pointer;
         }
 
         .btn:hover {
-            background: var(--purple-dark);
-            color: var(--white);
+            background-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(199, 125, 255, 0.6);
         }
 
-        /* Carousel Section */
+        .hero-image img {
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            /* GLOW effect */
+            box-shadow: 0 0 20px var(--color-secondary);
+
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+
+        .hero-image img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px var(--color-accent);
+        }
+
+        /* ======= Carousel Section ======= */
         .carousel-section {
-            padding: 60px 5%;
             background-color: var(--white);
+            padding: 60px 5%;
             text-align: center;
         }
 
@@ -172,25 +177,24 @@
             color: var(--primary);
             margin-bottom: 40px;
             position: relative;
-            display: inline-block;
         }
 
         .section-title::after {
             content: "";
-            display: block;
             width: 80px;
             height: 4px;
             background: var(--accent);
-            margin: 15px auto;
+            margin: 15px auto 0;
+            display: block;
             border-radius: 2px;
         }
 
         .carousel {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
             overflow: hidden;
             border-radius: 15px;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
@@ -201,30 +205,26 @@
 
         .carousel-slide {
             min-width: 100%;
-            position: relative;
         }
 
         .carousel img {
             width: 100%;
             height: 500px;
             object-fit: cover;
-            display: block;
         }
 
         .carousel-caption {
+            background: rgba(0, 48, 73, 0.85);
+            color: var(--text-light);
+            padding: 20px;
             position: absolute;
             bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 61, 98, 0.8);
-            color: white;
-            padding: 20px;
+            width: 100%;
             text-align: left;
         }
 
         .carousel-caption h3 {
             font-size: 1.5rem;
-            margin-bottom: 10px;
         }
 
         .prev,
@@ -235,16 +235,19 @@
             background: rgba(255, 255, 255, 0.3);
             color: var(--primary);
             border: none;
-            padding: 15px;
-            cursor: pointer;
             border-radius: 50%;
-            font-size: 20px;
             width: 50px;
             height: 50px;
+            font-size: 20px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background: rgba(255, 255, 255, 0.8);
         }
 
         .prev {
@@ -255,15 +258,10 @@
             right: 20px;
         }
 
-        .prev:hover,
-        .next:hover {
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        /* Mission Section */
+        /* ======= Mission Section ======= */
         .mission {
-            padding: 80px 5%;
             background-color: var(--light);
+            padding: 80px 5%;
             text-align: center;
         }
 
@@ -272,18 +270,17 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: auto;
         }
 
         .mission-card {
-            background-color: var(--white);
+            background: var(--white);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             text-align: left;
-            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             position: relative;
-            overflow: hidden;
+            transition: 0.3s ease;
         }
 
         .mission-card:hover {
@@ -298,26 +295,25 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: var(--purple);
+            background: var(--accent);
         }
 
         .mission-card li {
-            font-size: 1rem;
-            line-height: 1.6;
             list-style: none;
+            margin-bottom: 10px;
             padding-left: 15px;
             position: relative;
-            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
         .mission-card li::before {
             content: "✓";
-            color: var(--purple-dark);
-            font-weight: bold;
-            margin-right: 10px;
+            position: absolute;
+            left: 0;
+            color: var(--primary);
         }
 
-        /* Footer */
+        /* ======= Footer ======= */
         footer {
             background-color: var(--primary);
             color: var(--white);
@@ -330,14 +326,14 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 40px;
             max-width: 1200px;
-            margin: 0 auto 40px;
+            margin: auto;
             text-align: left;
         }
 
         .footer-column h3 {
             font-size: 1.3rem;
+            color: var(--accent);
             margin-bottom: 20px;
-            color: var(--purple);
         }
 
         .footer-column ul {
@@ -351,11 +347,10 @@
         .footer-column a {
             color: var(--white);
             text-decoration: none;
-            transition: color 0.3s ease;
         }
 
         .footer-column a:hover {
-            color: var(--purple);
+            color: var(--accent);
         }
 
         .social-links {
@@ -367,11 +362,10 @@
         .social-links a {
             color: var(--white);
             font-size: 1.5rem;
-            transition: color 0.3s ease;
         }
 
         .social-links a:hover {
-            color: var(--purple);
+            color: var(--accent);
         }
 
         .copyright {
@@ -380,7 +374,7 @@
             font-size: 0.9rem;
         }
 
-        /* Animations */
+        /* ======= Animations ======= */
         @keyframes fadeInLeft {
             from {
                 opacity: 0;
@@ -404,70 +398,8 @@
                 transform: translateX(0);
             }
         }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding: 60px 5%;
-            }
-
-            .hero-text {
-                max-width: 100%;
-                margin-bottom: 40px;
-            }
-
-            .carousel img {
-                height: 400px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                padding: 15px;
-            }
-
-            nav ul {
-                margin-top: 15px;
-                gap: 15px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .hero-text h2 {
-                font-size: 2rem;
-            }
-
-            .hero-image img {
-                width: 280px;
-            }
-
-            .carousel img {
-                height: 300px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero {
-                padding: 40px 5%;
-                min-height: auto;
-            }
-
-            .hero-text h2 {
-                font-size: 1.8rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .carousel img {
-                height: 250px;
-            }
-        }
     </style>
+
 </head>
 
 <body>
@@ -493,8 +425,7 @@
             <a href="pendaftaran/login.html" class="btn">Pelajari Lebih Lanjut</a>
         </div>
         <div class="hero-image">
-            <img src="https://png.pngtree.com/png-clipart/20230118/original/pngtree-religious-education-and-bible-concept-png-image_8920283.png"
-                alt="Illustrasi komunitas Kristen">
+            <img src="galeri/logocgsy24.png" alt="Illustrasi komunitas Kristen">
         </div>
     </section>
 
@@ -503,24 +434,28 @@
         <div class="carousel">
             <div class="carousel-container">
                 <div class="carousel-slide">
-                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-at-shop-111.jpg"
-                        alt="Diskusi Cell Group">
+                    <img src="galeri/sharing1.png" alt="Diskusi Cell Group">
                     <div class="carousel-caption">
                         <h3>Diskusi Kelompok Kecil</h3>
                         <p>Sharing dan pendalaman firman Tuhan dalam kelompok kecil</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://click4hope.wordpress.com/wp-content/uploads/2011/08/cell-group-meal-111.jpg"
-                        alt="Persekutuan Makan">
+                    <img src="galeri/persekutuanmakan1.png" alt="Persekutuan Makan">
                     <div class="carousel-caption">
                         <h3>Persekutuan Makan Bersama</h3>
                         <p>Membangun keakraban melalui makan bersama</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://legacynews.id/wp-content/uploads/2021/09/Sean-Feucht-memimpin-ibadah-di-National-Mall-551x381.jpg"
-                        alt="Ibadah Umum">
+                    <img src="galeri/event1.png" alt="Persekutuan Makan">
+                    <div class="carousel-caption">
+                        <h3>Ibadah Army of God</h3>
+                        <p>Ibadah khusus untuk remaja dan pemuda di dalam Gereja Mawar Sharon</p>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="galeri/ibadahumum1.png" alt="Ibadah Umum">
                     <div class="carousel-caption">
                         <h3>Ibadah Umum</h3>
                         <p>Bersatu dalam penyembahan dan pujian</p>
