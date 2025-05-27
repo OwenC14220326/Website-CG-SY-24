@@ -275,11 +275,11 @@
         });
 
         auth.onAuthStateChanged(user => {
-            if (!user) return location.href = 'login.html';
+            if (!user) return location.href = '../pendaftaran/login.html';
             db.collection('users').doc(user.uid).get()
                 .then(doc => {
                     if (!doc.exists || doc.data().role !== 'admin') {
-                        return location.href = 'login.html';
+                        return location.href = '../pendaftaran/login.html';
                     }
                 });
         });

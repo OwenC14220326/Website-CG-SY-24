@@ -307,6 +307,22 @@
 
     <div class="container">
         <h1 class="page-title">Tentang Kami</h1>
+
+        <section class="section">
+            <h3>Definisi</h3>
+            <p>
+                CG (Connect Group) adalah kelompok kecil atau komunitas kecil di dalam gereja yang terdiri dari beberapa
+                anggota
+                yang bertemu secara rutin untuk membangun hubungan yang lebih dekat, saling mendukung, belajar bersama,
+                dan bertumbuh
+                dalam iman Kristiani. CG bertujuan untuk menciptakan suasana kekeluargaan dan keintiman di antara
+                anggota gereja,
+                sehingga setiap orang dapat mengalami pendampingan rohani, berbagi kehidupan, serta saling menguatkan
+                dalam perjalanan iman mereka.
+            </p>
+        </section>
+
+
         <section class="section">
             <h3>Visi</h3>
             <div class="vision-mission">
@@ -442,6 +458,30 @@
 
         document.getElementById("imageModal").addEventListener("click", () => {
             document.getElementById("imageModal").style.display = "none";
+        });
+
+        // 2) Guard: hanya anggota yang boleh akses
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                // belum login
+                window.location.replace('../pendaftaran/login.html');
+            } else {
+                // ambil role
+                db.collection('users').doc(user.uid).get()
+                    .then(doc => {
+                        const data = doc.data();
+                        if (!doc.exists || data.role !== 'anggota' && data.role !== 'sponsor') {
+                            // bukan anggota
+                            window.location.replace('../pendaftaran/login.html');
+                        } else {
+                            // render identitas
+                            document.getElementById('userName').textContent = data.nama || '-';
+                            document.getElementById('userEmail').textContent = data.email || '-';
+                            document.getElementById('userPhone').textContent = data.nomortelepon || '-';
+                            document.getElementById('userLevel').textContent = (data.levelIman || '-').replace(/CG/, 'CG ');
+                        }
+                    });
+            }
         });
 
         // Logout

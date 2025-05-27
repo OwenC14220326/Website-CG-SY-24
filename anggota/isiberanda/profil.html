@@ -348,11 +348,11 @@
 
         auth.onAuthStateChanged(user => {
             if (!user) {
-                window.location.href = 'login.html';
+                window.location.href = '../../pendaftaran/login.html';
             } else {
                 db.collection('users').doc(user.uid).get().then(doc => {
                     if (!doc.exists || (doc.data().role !== 'anggota' && doc.data().role !== 'sponsor')) {
-                        window.location.href = 'login.html';
+                        window.location.href = '../../pendaftaran/login.html';
                     } else {
                         const data = doc.data();
                         document.getElementById('nama').textContent = data.nama || '-';

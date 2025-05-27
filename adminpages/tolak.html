@@ -217,12 +217,12 @@
         // Pastikan hanya admin yang dapat akses
         auth.onAuthStateChanged(user => {
             if (!user) {
-                return window.location.href = 'login.html';
+                return window.location.href = '../pendaftaran/login.html';
             }
             db.collection('users').doc(user.uid).get()
                 .then(doc => {
                     if (!doc.exists || doc.data().role !== 'admin') {
-                        window.location.href = 'login.html';
+                        window.location.href = '../pendaftaran/login.html';
                     }
                 });
         });

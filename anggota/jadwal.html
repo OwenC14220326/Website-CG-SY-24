@@ -279,6 +279,30 @@
             });
         });
 
+        // 2) Guard: hanya anggota yang boleh akses
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                // belum login
+                window.location.replace('../pendaftaran/login.html');
+            } else {
+                // ambil role
+                db.collection('users').doc(user.uid).get()
+                    .then(doc => {
+                        const data = doc.data();
+                        if (!doc.exists || data.role !== 'anggota' && data.role !== 'sponsor') {
+                            // bukan anggota
+                            window.location.replace('../pendaftaran/login.html');
+                        } else {
+                            // render identitas
+                            document.getElementById('userName').textContent = data.nama || '-';
+                            document.getElementById('userEmail').textContent = data.email || '-';
+                            document.getElementById('userPhone').textContent = data.nomortelepon || '-';
+                            document.getElementById('userLevel').textContent = (data.levelIman || '-').replace(/CG/, 'CG ');
+                        }
+                    });
+            }
+        });
+
         document.getElementById('logoutBtn').addEventListener('click', () => {
             const confirmLogout = confirm('Apakah Anda yakin ingin logout?');
             if (confirmLogout) {
